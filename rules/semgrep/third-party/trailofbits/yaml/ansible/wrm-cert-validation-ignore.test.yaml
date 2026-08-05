@@ -1,4 +1,3 @@
----
-- name: Positive test
-  # ruleid: wrm-cert-validation-ignore
-  ansible_winrm_server_cert_validation: ignore
+version https://git-lfs.github.com/spec/v1
+oid sha256:f99761a4852ee8940b71a6d4fd6c8f2a4bcb38f00f4af1f1ec7bf94ca6bed65c
+size 116

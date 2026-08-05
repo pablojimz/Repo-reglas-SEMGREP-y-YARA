@@ -1,14 +1,3 @@
-kind: NetworkPolicy
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: test
-  namespace: '{{$config.global.namespace}}'
-  labels:
-    app: test
-spec:
-  podSelector:
-    matchLabels:
-      app: test
-  # ruleid: network-policy-ingress-any
-  ingress:
-    - {}
+version https://git-lfs.github.com/spec/v1
+oid sha256:49adbdb83d02f8b2f654649f2309dfbbb34b05ddd38e259790ce959e68f2b58c
+size 271

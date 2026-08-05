@@ -1,33 +1,3 @@
-rules:
-  - id: port-all-interfaces
-    message: Service port is exposed on all interfaces
-    languages: [yaml]
-    severity: WARNING
-    metadata:
-      category: security
-      cwe: "CWE-1327: Binding to an Unrestricted IP Address"
-      subcategory: [audit]
-      technology: [docker, compose]
-      confidence: LOW
-      likelihood: LOW
-      impact: LOW
-      references:
-        - https://docs.docker.com/compose/compose-file/compose-file-v3/#ports
-      severity_score: 25
-      confidence_score: 30
-      exploitability_score: 40
-      risk_score: 30
-      risk_justification: 'FALTA DATO: exposición real de red del host no verificable desde el archivo; conservador=40. Regla propia ya la marca LOW/LOW/LOW; bind 0.0.0.0 suele ser intencional.'
-    patterns:
-      - pattern-inside: |
-          services:
-            ...
-      - pattern: |
-          ports:
-            - ...
-            - "$PORT"
-            - ...
-      - focus-metavariable: $PORT
-      - metavariable-regex:
-          metavariable: $PORT
-          regex: '^(?!127.\d{1,3}.\d{1,3}.\d{1,3}:).+'
+version https://git-lfs.github.com/spec/v1
+oid sha256:69c1402151d9e2170b3be0ee99ef7c87df02cd8bc1d7aaed3b5c55546693d067
+size 1105

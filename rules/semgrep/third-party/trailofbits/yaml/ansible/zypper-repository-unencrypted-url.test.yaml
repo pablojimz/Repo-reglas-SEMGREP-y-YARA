@@ -1,14 +1,3 @@
----
-- name: Semgrep tests
-  hosts: all
-  tasks:
-    - name: Positive test
-      community.general.zypper_repository:
-        # ruleid: zypper-repository-unencrypted-url
-        repo: "http://example.com/repo/"
-        auto_import_keys: true
-    - name: Negative test
-      community.general.zypper_repository:
-        # ok: zypper-repository-unencrypted-url
-        repo: "https://example.com/repo/"
-        auto_import_keys: true
+version https://git-lfs.github.com/spec/v1
+oid sha256:bc007bb675e701c180c95f6e99784871299cfe76f4f77c0aa6c04ea0e1196248
+size 445

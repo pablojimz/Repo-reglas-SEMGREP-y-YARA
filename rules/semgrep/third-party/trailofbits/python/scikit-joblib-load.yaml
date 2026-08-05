@@ -1,27 +1,3 @@
-rules:
-  - id: scikit-joblib-load
-    message: >-
-      Scikit `joblib` uses pickle under the hood. Functions reliant on pickle can result in arbitrary code execution.
-      Consider using `skops` instead.
-    languages: [python]
-    severity: ERROR
-    metadata:
-      category: security
-      cwe: "CWE-502: Deserialization of Untrusted Data"
-      subcategory: [vuln]
-      confidence: MEDIUM
-      likelihood: MEDIUM
-      impact: HIGH
-      technology: [scikit]
-      description: "Potential arbitrary code execution from `SciKit.Joblib` functions reliant on pickling"
-      references:
-        - https://scikit-learn.org/stable/model_persistence.html
-
-      severity_score: 100
-      confidence_score: 60
-      exploitability_score: 40
-      risk_score: 73
-      risk_justification: joblib.load usa pickle (RCE); excluye solo literal, requiere archivo no confiable.
-    patterns:
-      - pattern: joblib.load(...)
-      - pattern-not: joblib.load("...")
+version https://git-lfs.github.com/spec/v1
+oid sha256:63044334790949bcd4dffc798644b0ed1ed7078dbc8f1b084540057a15c5bf0a
+size 987

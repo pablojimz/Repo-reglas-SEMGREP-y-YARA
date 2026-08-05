@@ -1,31 +1,3 @@
-rules:
-- id: mongo-client-bad-auth
-  pattern: |
-    pymongo.MongoClient(..., authMechanism='MONGODB-CR')
-  message: >-
-    Warning MONGODB-CR was deprecated with the release of MongoDB 3.6 and is no longer supported by MongoDB
-    4.0 (see https://api.mongodb.com/python/current/examples/authentication.html for details).
-  fix-regex:
-    regex: MONGODB-CR
-    replacement: SCRAM-SHA-256
-  severity: WARNING
-  languages:
-  - python
-  metadata:
-    cwe:
-    - 'CWE-477: Use of Obsolete Function'
-    category: security
-    technology:
-    - pymongo
-    references:
-    - https://cwe.mitre.org/data/definitions/477.html
-    subcategory:
-    - vuln
-    likelihood: LOW
-    impact: LOW
-    confidence: MEDIUM
-    severity_score: 25
-    confidence_score: 100
-    exploitability_score: 40
-    risk_score: 51
-    risk_justification: authMechanism='MONGODB-CR' literal; mecanismo obsoleto ya no soportado en MongoDB 4+, más higiene/compatibilidad que vulnerabilidad activa explotable.
+version https://git-lfs.github.com/spec/v1
+oid sha256:9e0eaa9ae799aa70e886ed89e4bb2188adb58651ef5b45837832159abf0811bd
+size 1009

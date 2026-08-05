@@ -1,30 +1,3 @@
-rules:
-- id: wildcard-postmessage-configuration
-  message: >-
-    The target origin of the window.postMessage() API is set to "*". This could allow for information
-    disclosure due to the possibility of any origin allowed to receive the message.
-  metadata:
-    owasp:
-    - A08:2021 - Software and Data Integrity Failures
-    cwe:
-    - 'CWE-345: Insufficient Verification of Data Authenticity'
-    category: security
-    technology:
-    - browser
-    subcategory:
-    - audit
-    likelihood: HIGH
-    impact: MEDIUM
-    confidence: MEDIUM
-    references:
-    - https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures
-    severity_score: 75
-    confidence_score: 100
-    exploitability_score: 80
-    risk_score: 84
-    risk_justification: postMessage(...,'*') literal exacto, expone datos a cualquier origen.
-  languages:
-  - javascript
-  - typescript
-  severity: WARNING
-  pattern: $OBJECT.postMessage(...,'*')
+version https://git-lfs.github.com/spec/v1
+oid sha256:15f10fdaabedab55eeabd2cec04d802f567ee9cf64ec0821eba431f6c4796627
+size 959

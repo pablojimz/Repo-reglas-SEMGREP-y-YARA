@@ -1,19 +1,3 @@
-apiVersion: v1
-kind: Pod
-spec:
-  containers:
-    # ok: seccomp-confinement-disabled
-    - name: nginx
-      image: nginx
-    # ok: seccomp-confinement-disabled
-    - name: postgres
-      image: postgres
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 3000
-        fsGroup: 2000
-    # ruleid: seccomp-confinement-disabled
-    - name: redis
-      image: redis
-      securityContext:
-        seccompProfile: unconfined
+version https://git-lfs.github.com/spec/v1
+oid sha256:0634112ae9f8d224509223fe01785042ed87ada35c68310aae395121a262c2bf
+size 454

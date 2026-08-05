@@ -1,34 +1,3 @@
-rules:
-- id: use-of-blowfish
-  pattern: $CIPHER.getInstance("Blowfish")
-  metadata:
-    functional-categories:
-    - 'crypto::search::symmetric-algorithm::javax.crypto'
-    cwe:
-    - 'CWE-327: Use of a Broken or Risky Cryptographic Algorithm'
-    owasp:
-    - A03:2017 - Sensitive Data Exposure
-    - A02:2021 - Cryptographic Failures
-    category: security
-    technology:
-    - java
-    references:
-    - https://owasp.org/Top10/A02_2021-Cryptographic_Failures
-    - https://googleprojectzero.blogspot.com/2022/10/rc4-is-still-considered-harmful.html
-    subcategory:
-    - vuln
-    likelihood: MEDIUM
-    impact: MEDIUM
-    confidence: HIGH
-    severity_score: 50
-    confidence_score: 100
-    exploitability_score: 80
-    risk_score: 72
-    risk_justification: Literal Blowfish exacto en getInstance.
-  message: >-
-    Use of Blowfish was detected. Blowfish uses a 64-bit block size that  makes it vulnerable to birthday attacks, and is therefore considered non-compliant.  Instead, use a strong, secure cipher: Cipher.getInstance("AES/CBC/PKCS7PADDING").
-    See https://owasp.org/www-community/Using_the_Java_Cryptographic_Extensions
-    for more information.
-  severity: WARNING
-  languages:
-  - java
+version https://git-lfs.github.com/spec/v1
+oid sha256:b10f47346f38abcd0604fab39c2ef2e846a250ab7da4a6a7bdf9c40603ba91b9
+size 1243

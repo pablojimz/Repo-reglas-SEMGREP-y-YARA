@@ -1,12 +1,3 @@
----
-- name: Semgrep tests
-  hosts: all
-  tasks:
-    - name: Positive test
-      ansible.builtin.apt:
-        # ruleid: apt-unencrypted-url
-        deb: http://example.com/package.deb
-    - name: Negative test
-      ansible.builtin.apt:
-        # ok: apt-unencrypted-url
-        deb: https://example.com/package.deb
+version https://git-lfs.github.com/spec/v1
+oid sha256:0fb105ec5734d8013c10344d687e7e5140822b5aa2a44d3f85920b34590a0b9b
+size 327

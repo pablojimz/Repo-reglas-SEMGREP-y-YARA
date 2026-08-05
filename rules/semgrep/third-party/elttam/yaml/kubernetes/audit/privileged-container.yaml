@@ -1,31 +1,3 @@
-rules:
-  - id: privileged-container
-    patterns:
-      - pattern-inside: |
-          containers:
-            ...
-      - pattern: |
-          image: $IMAGE
-          ...
-          securityContext:
-            ...
-            privileged: true
-    message: >-
-      Privileged Container $IMAGE
-    metadata:
-      category: security
-      subcategory: audit
-      likelihood: MEDIUM
-      impact: LOW
-      confidence: HIGH
-      technology:
-        - kubernetes
-      references:
-        - https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
-      severity_score: 100
-      confidence_score: 100
-      exploitability_score: 100
-      risk_score: 100
-      risk_justification: 'privileged: true equivale a control casi total del host (fuga de contenedor); patrón exacto, siempre activo en despliegue.'
-    languages: [yaml]
-    severity: WARNING
+version https://git-lfs.github.com/spec/v1
+oid sha256:29102f0fa79fa516edbb382de14056f1cadd45efa82ab96a22623f98358e91a6
+size 900

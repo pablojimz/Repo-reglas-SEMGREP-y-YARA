@@ -1,14 +1,3 @@
-management:
-  endpoints:
-    web:
-      exposure:
-        # ruleid: spring-actuator-exposed-endpoints
-        include: "*"
-
----
-management:
-  endpoints:
-    web:
-      exposure:
-        # ok: spring-actuator-exposed-endpoints
-        include: "health,info"
+version https://git-lfs.github.com/spec/v1
+oid sha256:a92f758de297a3fcc2151a6f4949736299177d5377e6f7791a2d2570dd5d3e80
+size 257

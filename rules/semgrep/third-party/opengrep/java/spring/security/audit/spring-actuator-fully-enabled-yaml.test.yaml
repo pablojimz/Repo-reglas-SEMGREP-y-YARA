@@ -1,10 +1,3 @@
-server:
-  port: 8081
-management:
-  endpoints:
-    web:
-      # ok: spring-actuator-fully-enabled-yaml
-      base-path: /internal
-      exposure:
-        # ruleid: spring-actuator-fully-enabled-yaml
-        include: "*"
+version https://git-lfs.github.com/spec/v1
+oid sha256:44d2ad4e1462cdbf9bb98583188f18eeda0ba20aaa17b080b928ff583efefe87
+size 227

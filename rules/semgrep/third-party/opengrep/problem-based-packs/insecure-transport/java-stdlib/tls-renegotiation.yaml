@@ -1,31 +1,3 @@
-rules:
-- id: tls-renegotiation
-  message: >-
-    Checks for cases where java applications are allowing unsafe renegotiation.
-    This leaves the application vulnerable to a man-in-the-middle attack where chosen plain text is injected
-    as prefix to
-    a TLS connection.
-  severity: WARNING
-  metadata:
-    likelihood: LOW
-    impact: MEDIUM
-    confidence: MEDIUM
-    category: security
-    cwe: 'CWE-319: Cleartext Transmission of Sensitive Information'
-    owasp: 'A03:2017 - Sensitive Data Exposure'
-    references:
-    - https://www.oracle.com/java/technologies/javase/tlsreadme.html
-    subcategory:
-    - vuln
-    technology:
-    - java
-    vulnerability: Insecure Transport
-    severity_score: 50
-    confidence_score: 100
-    exploitability_score: 80
-    risk_score: 72
-    risk_justification: setProperty con clave y valor true literales exactos, sin ambiguedad.
-  languages:
-  - java
-  pattern: |
-    java.lang.System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", true);
+version https://git-lfs.github.com/spec/v1
+oid sha256:56b5395234aa21f35b8c2ce81a07828b42f4988bcf007be88194bfd199379508
+size 1026

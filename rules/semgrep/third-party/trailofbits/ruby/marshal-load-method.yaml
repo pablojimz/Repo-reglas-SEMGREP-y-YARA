@@ -1,33 +1,3 @@
-rules:
-  - id: marshal-load-method
-    message: |
-      Found `marshal_load` class method. This implies custom Marshal
-      deserialization is occuring. This can lead to RCE and other
-      deserialization-type bugs.  Usage should be audited and, at least, fuzzed.
-    languages: [ruby]
-    severity: INFO
-    metadata:
-      category: security
-      cwe: "CWE-502: Deserialization of Untrusted Data"
-      subcategory: [audit]
-      confidence: LOW
-      likelihood: LOW
-      impact: HIGH
-      technology: [ruby]
-      references:
-        - https://github.blog/2024-06-20-execute-commands-by-sending-json-learn-how-unsafe-deserialization-vulnerabilities-work-in-ruby-projects/
-        - https://github.com/GitHubSecurityLab/ruby-unsafe-deserialization/blob/main/marshal/3.4-rc/marshal-rce-ruby-3.4-rc.rb
-      severity_score: 25
-      confidence_score: 100
-      exploitability_score: 40
-      risk_score: 51
-      risk_justification: Reconocimiento de hook marshal_load; requiere Marshal.load sobre dato no confiable en otra parte del código.
-    patterns:
-      - pattern-inside: |
-          class $CLS
-            ...
-          end
-      - pattern: |
-          def marshal_load(...)
-            ...
-          end
+version https://git-lfs.github.com/spec/v1
+oid sha256:b2228bc13ff54bb2f83c2c2df6bbd52a43234998251a3c645ad203540ef68c3c
+size 1254

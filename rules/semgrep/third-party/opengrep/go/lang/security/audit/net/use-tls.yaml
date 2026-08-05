@@ -1,30 +1,3 @@
-rules:
-- id: use-tls
-  pattern: http.ListenAndServe($ADDR, $HANDLER)
-  fix: http.ListenAndServeTLS($ADDR, certFile, keyFile, $HANDLER)
-  metadata:
-    cwe:
-    - 'CWE-319: Cleartext Transmission of Sensitive Information'
-    owasp:
-    - A03:2017 - Sensitive Data Exposure
-    - A02:2021 - Cryptographic Failures
-    references:
-    - https://golang.org/pkg/net/http/#ListenAndServeTLS
-    category: security
-    technology:
-    - go
-    confidence: MEDIUM
-    subcategory:
-    - audit
-    likelihood: LOW
-    impact: MEDIUM
-    severity_score: 50
-    confidence_score: 30
-    exploitability_score: 80
-    risk_score: 52
-    risk_justification: ListenAndServe sin TLS; patron extremadamente comun y seguro cuando TLS se termina en proxy/balanceador externo.
-  message: >-
-    Found an HTTP server without TLS. Use 'http.ListenAndServeTLS' instead.
-    See https://golang.org/pkg/net/http/#ListenAndServeTLS for more information.
-  languages: [go]
-  severity: WARNING
+version https://git-lfs.github.com/spec/v1
+oid sha256:56ddf2431a71695084d4dc23cc90e81bfce4801dc1ac73e9345638b540f320b8
+size 997

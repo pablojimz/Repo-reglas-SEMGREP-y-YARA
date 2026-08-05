@@ -1,29 +1,3 @@
-rules:
-  - id: container-user-root
-    message: Found container command running as root
-    languages: [generic]
-    severity: WARNING
-    metadata:
-      category: security
-      subcategory: [audit]
-      technology: [shell]
-      cwe: "CWE-250: Execution with Unnecessary Privileges"
-      confidence: MEDIUM
-      likelihood: MEDIUM
-      impact: HIGH
-      references:
-        - https://docs.docker.com/engine/reference/commandline/run/
-      severity_score: 50
-      confidence_score: 100
-      exploitability_score: 80
-      risk_score: 72
-      risk_justification: 'FALTA DATO: idem ejecución, conservador=80. Root dentro del contenedor debilita aislamiento sin romper namespace por sí solo.'
-    pattern-either:
-      - pattern: docker ... -u root
-      - pattern: docker ... -u 0
-      - pattern: docker ... --user root
-      - pattern: docker ... --user 0
-      - pattern: podman ... -u root
-      - pattern: podman ... --u 0
-      - pattern: podman ... --user root
-      - pattern: podman ... --user 0
+version https://git-lfs.github.com/spec/v1
+oid sha256:dc446c8fffdb0be1b3e444911013403ea0da263278474fe1411bf8182a32fb31
+size 1045

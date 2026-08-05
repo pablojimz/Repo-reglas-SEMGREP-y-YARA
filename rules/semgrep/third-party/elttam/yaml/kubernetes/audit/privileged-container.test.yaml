@@ -1,14 +1,3 @@
-apiVersion: apps/v1
-kind: DaemonSet
-metadata:
-  name: test
-spec:
-  template:
-    spec:
-      hostNetwork: true
-      containers:
-        # ruleid: privileged-container
-        - name: test
-          image: test/test
-          securityContext:
-            privileged: true
+version https://git-lfs.github.com/spec/v1
+oid sha256:4076fc58993a167a916f5197a1c4862140ac85cdc95b196bc5ecacba198c8888
+size 286

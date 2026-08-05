@@ -1,30 +1,3 @@
-rules:
-  - id: v3-csrf-prevention
-    languages: [js, ts]
-    message: >-
-      The Apollo GraphQL server lacks the 'csrfPrevention' option. This option is 'false' by the default in v3 of the Apollo GraphQL v3, which can enable CSRF attacks.
-    severity: ERROR
-    metadata:
-      category: security
-      cwe: "CWE-352: Cross-Site Request Forgery (CSRF)"
-      subcategory: [vuln]
-      confidence: HIGH
-      likelihood: MEDIUM
-      impact: MEDIUM
-      technology:
-        - graphql
-        - apollo-graphql-server
-        - apollo-graphql-server-v3
-      description: "Lack of CSRF prevention"
-      references:
-        - https://www.apollographql.com/docs/apollo-server/v3/security/cors/#preventing-cross-site-request-forgery-csrf
-
-      severity_score: 75
-      confidence_score: 100
-      exploitability_score: 80
-      risk_score: 84
-      risk_justification: Falta csrfPrevention, que es false por defecto en v3; check exacto de ausencia del literal true.
-    patterns:
-      - pattern: new ApolloServer({...})
-      - pattern-not: |
-          new ApolloServer({..., csrfPrevention: true, ...})
+version https://git-lfs.github.com/spec/v1
+oid sha256:49c91bfb3f5760de49a0576df57b26215d46d2259f86219fddc6651f307f3beb
+size 1136

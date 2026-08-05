@@ -1,32 +1,3 @@
-rules:
-  - id: numpy-in-pytorch-datasets
-    message: >-
-      Using the NumPy RNG inside of a PyTorch dataset can lead to a number of issues with loading data, including identical augmentations.
-      Instead, use the random number generators built into Python and PyTorch
-    languages: [python]
-    severity: WARNING
-    metadata:
-      category: security
-      cwe: "CWE-330: Use of Insufficiently Random Values"
-      subcategory: [audit]
-      confidence: HIGH
-      likelihood: MEDIUM
-      impact: LOW
-      technology: [pytorch, numpy]
-      description: "Calls to the `NumPy` RNG inside of a `Torch` dataset"
-      references:
-        - https://tanelp.github.io/posts/a-bug-that-plagues-thousands-of-open-source-ml-projects
-
-      severity_score: 25
-      confidence_score: 80
-      exploitability_score: 80
-      risk_score: 55
-      risk_justification: RNG de NumPy en Dataset causa augmentations duplicadas; bug de calidad ML, no vulnerabilidad de seguridad real.
-    patterns:
-      - pattern: |
-          class $X(torch.utils.data.Dataset):
-            ...
-            def __getitem__(...):
-              ...
-              numpy.random.randint(...)
-              ...
+version https://git-lfs.github.com/spec/v1
+oid sha256:5f0df6cc69371198e51a65ae2b7a881b6abfc1bcb19612db613ad088a046084e
+size 1214

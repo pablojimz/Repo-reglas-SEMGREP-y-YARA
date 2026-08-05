@@ -1,17 +1,3 @@
----
-- name: Semgrep tests
-  hosts: all
-  tasks:
-    - name: Positive test
-      ansible.builtin.unarchive:
-        src: https://example.com/example.zip
-        dest: /usr/local/bin
-        remote_src: yes
-        # ruleid: unarchive-validate-certs-disabled
-        validate_certs: false
-    - name: Negative test (unarchive-unencrypted-url and unarchive-validate-certs-disabled)
-      ansible.builtin.unarchive:
-        # ok: unarchive-validate-certs-disabled
-        src: https://example.com/example.zip
-        dest: /usr/local/bin
-        remote_src: yes
+version https://git-lfs.github.com/spec/v1
+oid sha256:1bcaf91a0bead0eb50737088460463ec99dfd5a4f10cb0baa24a272923165f6b
+size 575

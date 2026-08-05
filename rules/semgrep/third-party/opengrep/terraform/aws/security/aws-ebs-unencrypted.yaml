@@ -1,33 +1,3 @@
-rules:
-- id: aws-ebs-unencrypted
-  patterns:
-  - pattern: |
-      resource "aws_ebs_encryption_by_default" $ANYTHING {
-        ...
-        enabled = false
-        ...
-      }
-  message: The AWS EBS is unencrypted. The AWS EBS encryption protects data in the EBS.
-  languages: [hcl]
-  severity: WARNING
-  metadata:
-    owasp:
-    - A03:2017 - Sensitive Data Exposure
-    cwe:
-    - 'CWE-320: CWE CATEGORY: Key Management Errors'
-    technology:
-    - aws
-    - terraform
-    category: security
-    references:
-    - https://owasp.org/Top10/A02_2021-Cryptographic_Failures
-    subcategory:
-    - vuln
-    likelihood: MEDIUM
-    impact: MEDIUM
-    confidence: MEDIUM
-    severity_score: 50
-    confidence_score: 100
-    exploitability_score: 100
-    risk_score: 78
-    risk_justification: Cifrado por defecto de EBS deshabilitado a nivel de cuenta; literal exacto enabled=false.
+version https://git-lfs.github.com/spec/v1
+oid sha256:9e4aaa88a55ef1e38016699bc5db65caa9e9335ea1893c8fc8c5252f3eb6c97c
+size 909

@@ -1,24 +1,3 @@
-rules:
-  - id: bash-eval-dynamic-code
-    languages: [bash]
-    severity: ERROR
-    message: >-
-      Found `eval` executing a variable instead of a fixed string. `eval`
-      runs its argument as shell code; if the variable is influenced by user
-      input, a file, or any external/mutable source, this is arbitrary
-      command execution. Avoid `eval` with dynamic content; use an array and
-      call the command directly, or `case`/parameter expansion for
-      whitelisted dispatch instead.
-    metadata:
-      category: security
-      confidence: MEDIUM
-      cwe: "CWE-95: Improper Neutralization of Directives in Dynamically Evaluated Code ('Eval Injection')"
-      owasp: ["A03:2021 - Injection"]
-      references:
-        - https://cwe.mitre.org/data/definitions/95.html
-        - https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html
-    patterns:
-      - pattern: eval $CMD
-      - metavariable-regex:
-          metavariable: $CMD
-          regex: .*\$.*
+version https://git-lfs.github.com/spec/v1
+oid sha256:e83528cb2feb93e98fe2288d4a9545367556cde8bd4b070dcde6dffb3c34c674
+size 1281

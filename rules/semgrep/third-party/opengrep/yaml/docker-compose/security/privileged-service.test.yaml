@@ -1,12 +1,3 @@
-version: "3.9"
-services:
-  # ok: privileged-service
-  web:
-    image: nginx:alpine
-  worker:
-    image: my-worker-image:latest
-    # ruleid:privileged-service
-    privileged: true
-  # ok: privileged-service
-  db:
-    image: mysql
+version https://git-lfs.github.com/spec/v1
+oid sha256:7bb99625d18f838c42098cae93ca02d8b6587dc5eebc5cdf6eac41ca80a838d1
+size 242

@@ -1,29 +1,3 @@
-rules:
-  - id: non-atomic-use-of-converted-uintptr
-    message: >-
-      An unsafe.Pointer converted to an uintptr must be used in an atomic step.
-      Without this it is not guaranteed that the memory location uintptr points to will contain the intended structure.
-    metadata:
-      category: security
-      subcategory: vuln
-      likelihood: MEDIUM
-      impact: MEDIUM
-      confidence: MEDIUM
-      technology:
-        - golang
-      severity_score: 75
-      confidence_score: 60
-      exploitability_score: 40
-      risk_score: 62
-      risk_justification: Antipatrón conocido de Go (uintptr guardado en variable); riesgo depende del timing del GC, no siempre determinista.
-    severity: WARNING
-    languages: [go]
-    pattern-either:
-      - pattern: |
-          $UINTPTR := uintptr(unsafe.Pointer( ... ))
-          ...
-          ... :=  $F(..., $UINTPTR, ...)
-      - pattern: |
-          $UINTPTR := uintptr($PTR)
-          ...
-          ... := $F(..., $UINTPTR, ...)
+version https://git-lfs.github.com/spec/v1
+oid sha256:52c0e9bb5036b971362474cc6b88bcc51c6682d2614463a06fba86e9cebc691b
+size 1011

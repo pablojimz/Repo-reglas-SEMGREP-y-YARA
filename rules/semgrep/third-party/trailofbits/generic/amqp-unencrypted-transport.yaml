@@ -1,24 +1,3 @@
-rules:
-  - id: amqp-unencrypted-transport
-    message: |
-      Found unencrypted AMQP connection, prefer TLS encrypted `amqps://` transport
-    languages: [generic]
-    severity: WARNING
-    metadata:
-      category: security
-      subcategory: [audit]
-      cwe: "CWE-319: Cleartext Transmission of Sensitive Information"
-      confidence: HIGH
-      likelihood: HIGH
-      impact: HIGH
-      technology: [amqp, rabbitmq]
-      references:
-        - https://www.rabbitmq.com/docs/uri-spec#the-amqps-uri-scheme
-      severity_score: 50
-      confidence_score: 100
-      exploitability_score: 80
-      risk_score: 72
-      risk_justification: 'FALTA DATO: no se sabe si la línea se ejecuta en script real o es doc/ejemplo; conservador=80. Esquema amqp:// es cleartext por definición, sin uso seguro conocido.'
-    options:
-      generic_ellipsis_max_span: 0
-    pattern: amqp://...
+version https://git-lfs.github.com/spec/v1
+oid sha256:ae63888086d3fb3c2de018fe02a5a7a088237bf191c594d2b43dc7021a1678cc
+size 907

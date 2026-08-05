@@ -1,36 +1,3 @@
-rules:
-- id: bash_reverse_shell
-  metadata:
-    cwe:
-    - "CWE-94: Improper Control of Generation of Code ('Code Injection')"
-    category: security
-    technology:
-    - ci
-    confidence: HIGH
-    owasp:
-    - A03:2021 - Injection
-    references:
-    - https://owasp.org/Top10/A03_2021-Injection
-    cwe2022-top25: true
-    subcategory:
-    - audit
-    likelihood: MEDIUM
-    impact: HIGH
-    severity_score: 100
-    confidence_score: 100
-    exploitability_score: 90
-    risk_score: 98
-    risk_justification: Shell reversa explícita en script; patrón literal exacto, se ejecuta en cada corrida del pipeline/build.
-  message: Semgrep found a bash reverse shell
-  severity: ERROR
-  languages:
-  - generic
-  pattern-either:
-  - pattern: |
-      sh -i >& /dev/udp/.../... 0>&1
-  - pattern: |
-      <...>/dev/tcp/.../...; sh <&... >&... 2>&
-  - pattern: |
-      <...>/dev/tcp/.../...; cat <&... | while read line; do $line 2>&... >&...;done
-  - pattern: |
-      sh -i ...<...> /dev/tcp/.../... ...<&... 1>&... 2>&
+version https://git-lfs.github.com/spec/v1
+oid sha256:6d22b9ae76b65a2f1764daf596ef1900c9c8ef6d6172f6302f58a446e2e4a3ef
+size 1052

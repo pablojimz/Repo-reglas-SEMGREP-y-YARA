@@ -1,29 +1,3 @@
-rules:
-- id: telnet-request
-  message: >-
-    Checks for attempts to connect to an insecure telnet server using the package telnet.
-    This is bad because it can lead to man in the middle attacks.
-  severity: WARNING
-  metadata:
-    likelihood: MEDIUM
-    impact: MEDIUM
-    confidence: MEDIUM
-    category: security
-    cwe: 'CWE-319: Cleartext Transmission of Sensitive Information'
-    owasp: 'A03:2017 - Sensitive Data Exposure'
-    references:
-    - https://godoc.org/github.com/reiver/go-telnet
-    subcategory:
-    - vuln
-    technology:
-    - go-telnet
-    vulnerability: Insecure Transport
-    severity_score: 50
-    confidence_score: 100
-    exploitability_score: 80
-    risk_score: 72
-    risk_justification: Llamada exacta a telnet.DialToAndCall, protocolo sin cifrar por diseno.
-  languages:
-  - go
-  pattern: |
-    telnet.DialToAndCall(...)
+version https://git-lfs.github.com/spec/v1
+oid sha256:9834bbfc76a7fde6bd198f8948d54f3f11cafcc7b90dfa2ea8db63801a1ba3ca
+size 885

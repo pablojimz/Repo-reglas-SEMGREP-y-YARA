@@ -1,14 +1,3 @@
-apiVersion: apiregistration.k8s.io/v1beta1
-kind: APIService
-metadata:
-  name: v1beta1.metrics.k8s.io
-# ruleid: skip-tls-verify-service
-spec:
-  service:
-    name: metrics-server
-    namespace: kube-system
-  group: metrics.k8s.io
-  version: v1beta1
-  insecureSkipTLSVerify: true
-  groupPriorityMinimum: 100
-  versionPriority: 100
+version https://git-lfs.github.com/spec/v1
+oid sha256:083be5fcdad807451dd29c302ce16e1a7ff8ac9da1fd7639c2850b70423b867b
+size 342

@@ -1,36 +1,3 @@
-rules:
-  - id: raptor-argv-envp-access
-    metadata:
-      author: Marco Ivaldi <raptor@0xdeadbeef.info>
-      category: security
-      subcategory:
-        - audit
-      vulnerability_class: Other Security
-      likelihood: LOW
-      impact: LOW
-      confidence: MEDIUM
-      technology:
-        - c
-        - cpp
-      cwe:
-        - "CWE-15: External Control of System or Configuration Setting"
-      owasp:
-        - A05:2025 - Injection
-      references:
-        - https://www.gnu.org/software/libc/manual/html_node/Program-Arguments.html
-      severity_score: 25
-      confidence_score: 30
-      exploitability_score: 80
-      risk_score: 40
-      risk_justification: Solo detecta acceso a argv/envp, sin sink peligroso confirmado; regla de auditoría.
-    message: >-
-      The program accesses command-line arguments or environment variables,
-      which are controlled by potential attackers.
-    severity: INFO
-    languages:
-      - c
-      - cpp
-    patterns:
-      - pattern-either:
-          - pattern: argv
-          - pattern: envp
+version https://git-lfs.github.com/spec/v1
+oid sha256:e76e7007c312b8c0efef9d6f2a9a9321200b3a075d6f2f06db669f2e0ff801e9
+size 1085

@@ -1,25 +1,3 @@
-rules:
-  - id: numpy-f2py-compile
-    message: Compiling arbitrary code can result in code execution. Ensure the source code is from a trusted location
-    languages: [python]
-    severity: ERROR
-    metadata:
-      category: security
-      cwe: "CWE-676: Use of Potentially Dangerous Function"
-      subcategory: [audit]
-      confidence: MEDIUM
-      likelihood: MEDIUM
-      impact: HIGH
-      technology: [numpy]
-      description: "Potential arbitrary code execution from `NumPy` `f2py` compilation"
-      references:
-        - https://numpy.org/doc/stable/f2py/usage.html
-
-      severity_score: 100
-      confidence_score: 60
-      exploitability_score: 40
-      risk_score: 73
-      risk_justification: Compilación de código dinámico (RCE potencial); solo excluye literal, sin taint tracking real, requiere fuente no confiable.
-    patterns:
-      - pattern: numpy.f2py.compile(...)
-      - pattern-not: numpy.f2py.compile("...", ...)
+version https://git-lfs.github.com/spec/v1
+oid sha256:807898aa73ac3ccab926335ddefaec4226445aa106611b74220433598ddcd453
+size 970

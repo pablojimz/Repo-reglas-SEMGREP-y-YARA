@@ -1,29 +1,3 @@
-rules:
-  - id: tensorflow-load-library
-    message: Loading custom operator libraries can result in arbitrary code execution
-    languages: [python]
-    severity: ERROR
-    metadata:
-      category: security
-      cwe: "CWE-676: Use of Potentially Dangerous Function"
-      subcategory: [audit]
-      confidence: MEDIUM
-      likelihood: MEDIUM
-      impact: HIGH
-      technology: [tensorflow]
-      description: "Potential arbitrary code execution from `TensorFlow` library loading"
-      references:
-        - https://www.tensorflow.org/api_docs/python/tf/load_library
-        - https://www.tensorflow.org/api_docs/python/tf/load_op_library
-
-      severity_score: 100
-      confidence_score: 60
-      exploitability_score: 40
-      risk_score: 73
-      risk_justification: Carga de librería nativa dinámica de TensorFlow (RCE); requiere ruta no confiable.
-    patterns:
-      - pattern-either:
-          - pattern: tensorflow.load_library(...)
-          - pattern: tensorflow.load_op_library(...)
-      - pattern-not: tensorflow.load_library("...")
-      - pattern-not: tensorflow.load_op_library("...")
+version https://git-lfs.github.com/spec/v1
+oid sha256:5a69d0af611307790fbb8a73a62d29005930bfe16344ad5c9886874fec35a7fe
+size 1138

@@ -1,34 +1,3 @@
-rules:
-- id: ssl-mode-no-verify
-  pattern: OpenSSL::SSL::VERIFY_NONE
-  message: >-
-    Detected SSL that will accept an unverified connection.
-    This makes the connections susceptible to man-in-the-middle attacks.
-    Use 'OpenSSL::SSL::VERIFY_PEER' instead.
-  fix-regex:
-    regex: VERIFY_NONE
-    replacement: VERIFY_PEER
-  severity: WARNING
-  languages:
-  - ruby
-  metadata:
-    cwe:
-    - 'CWE-295: Improper Certificate Validation'
-    category: security
-    technology:
-    - ruby
-    owasp:
-    - A03:2017 - Sensitive Data Exposure
-    - A07:2021 - Identification and Authentication Failures
-    references:
-    - https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures
-    subcategory:
-    - vuln
-    likelihood: HIGH
-    impact: MEDIUM
-    confidence: MEDIUM
-    severity_score: 50
-    confidence_score: 100
-    exploitability_score: 80
-    risk_score: 72
-    risk_justification: Constante OpenSSL::SSL::VERIFY_NONE exacta; deshabilita validación de certificado.
+version https://git-lfs.github.com/spec/v1
+oid sha256:04e0ef4608682f232d04d0ba5f6f516ff945978c86e37b6664bca4515dcb4c1e
+size 1028

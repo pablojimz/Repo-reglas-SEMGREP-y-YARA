@@ -1,14 +1,3 @@
----
-- name: Semgrep tests
-  hosts: all
-  tasks:
-    - name: Positive test
-      ansible.builtin.yum:
-        # ruleid: yum-unencrypted-url
-        name: http://example.com/package.rpm
-        state: present
-    - name: Negative test (yum-unencrypted-url and yum-validate-certs-disabled)
-      ansible.builtin.yum:
-        # ok: yum-unencrypted-url
-        name: https://example.com/package.rpm
-        state: present
+version https://git-lfs.github.com/spec/v1
+oid sha256:f6d7c68ee0581834096208c0daba64565b75819fa0e7a7321718e19c3ba40345
+size 431

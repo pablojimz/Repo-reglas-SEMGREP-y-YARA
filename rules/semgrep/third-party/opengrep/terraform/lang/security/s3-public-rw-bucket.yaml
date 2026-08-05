@@ -1,30 +1,3 @@
-rules:
-- id: s3-public-rw-bucket
-  pattern: acl = "public-read-write"
-  languages:
-  - hcl
-  severity: ERROR
-  message: S3 bucket with public read-write access detected.
-  metadata:
-    references:
-    - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket#acl
-    - https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl
-    cwe:
-    - 'CWE-200: Exposure of Sensitive Information to an Unauthorized Actor'
-    category: security
-    technology:
-    - terraform
-    - aws
-    owasp:
-    - A01:2021 - Broken Access Control
-    cwe2021-top25: true
-    subcategory:
-    - vuln
-    likelihood: LOW
-    impact: MEDIUM
-    confidence: MEDIUM
-    severity_score: 100
-    confidence_score: 100
-    exploitability_score: 100
-    risk_score: 100
-    risk_justification: acl=public-read-write; lectura/escritura arbitraria publica del bucket, literal exacto sin ambiguedad.
+version https://git-lfs.github.com/spec/v1
+oid sha256:d1fb7bf90a77212713a05de3ab88142e9a4eb3e0e27ef27a7ad79d10b22ce5cd
+size 948

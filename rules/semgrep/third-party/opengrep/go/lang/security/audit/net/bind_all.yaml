@@ -1,35 +1,3 @@
-rules:
-- id: avoid-bind-to-all-interfaces
-  message: >-
-    Detected a network listener listening on 0.0.0.0 or an empty string. This could unexpectedly expose
-    the server publicly as it binds to all available interfaces. Instead, specify another IP address
-    that is not 0.0.0.0 nor the empty string.
-  languages: [go]
-  severity: WARNING
-  metadata:
-    cwe:
-    - 'CWE-200: Exposure of Sensitive Information to an Unauthorized Actor'
-    owasp:
-    - A01:2021 - Broken Access Control
-    source-rule-url: https://github.com/securego/gosec
-    category: security
-    technology:
-    - go
-    confidence: HIGH
-    references:
-    - https://owasp.org/Top10/A01_2021-Broken_Access_Control
-    cwe2021-top25: true
-    subcategory:
-    - audit
-    likelihood: LOW
-    impact: MEDIUM
-    severity_score: 25
-    confidence_score: 30
-    exploitability_score: 80
-    risk_score: 40
-    risk_justification: Bind a 0.0.0.0/puerto vacio; patron habitual y esperado en despliegues en contenedor, sin exploit demostrado.
-  pattern-either:
-  - pattern: tls.Listen($NETWORK, "=~/^0.0.0.0:.*$/", ...)
-  - pattern: net.Listen($NETWORK, "=~/^0.0.0.0:.*$/", ...)
-  - pattern: tls.Listen($NETWORK, "=~/^:.*$/", ...)
-  - pattern: net.Listen($NETWORK, "=~/^:.*$/", ...)
+version https://git-lfs.github.com/spec/v1
+oid sha256:bda0f93e7fd3b12550323db922abf5c69904947323757a32f33fd5ff5576df45
+size 1290

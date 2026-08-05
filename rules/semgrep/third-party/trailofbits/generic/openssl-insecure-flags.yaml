@@ -1,31 +1,3 @@
-rules:
-  - id: openssl-insecure-flags
-    message: Found `openssl` command using insecure flags
-    languages: [generic]
-    severity: WARNING
-    metadata:
-      category: security
-      subcategory: [audit]
-      technology: [shell]
-      cwe: "CWE-295: Improper Certificate Validation"
-      confidence: MEDIUM
-      likelihood: MEDIUM
-      impact: HIGH
-      references:
-        - https://www.openssl.org/docs/manmaster/man1/
-      severity_score: 62.5
-      confidence_score: 100
-      exploitability_score: 80
-      risk_score: 78
-      risk_justification: 'FALTA DATO: idem ejecución, conservador=80. Mezcla exposición de password en CLI (pass:) con debilitamiento cripto (-nodes/-sha1); punto medio.'
-    pattern-either:
-      # A space character was left at the end of some patterns to help ensure
-      # that the intended flag was used, and minimize the chance that another,
-      # longer flag that _starts with_ the intended flag results in a false
-      # positive
-      - pattern: "openssl ... -pass pass:"
-      - pattern: "openssl ... -passin pass:"
-      - pattern: "openssl ... -passout pass:"
-      - pattern: "openssl ... -nodes "
-      - pattern: "openssl ... -noenc "
-      - pattern: "openssl ... -sha1 "
+version https://git-lfs.github.com/spec/v1
+oid sha256:72b05b2ff83b7aa1abd6761d8bd8381bf6593f1fea83493f2cc908fd8c1542a2
+size 1263

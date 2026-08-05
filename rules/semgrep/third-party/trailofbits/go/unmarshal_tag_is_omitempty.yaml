@@ -1,33 +1,3 @@
-rules:
-  - id: unmarshal-tag-is-omitempty
-    message: >-
-      Struct field can be unmarshaled with the `omitempty` key. The developer likely wanted to write ",omitempty" instead.
-    languages: [go]
-    severity: WARNING
-    metadata:
-      cwe: "CWE-172: Encoding Error"
-      category: security
-      subcategory: [vuln]
-      confidence: HIGH
-      likelihood: MEDIUM
-      impact: LOW
-      technology: [--no-technology--]
-      references:
-        - https://pkg.go.dev/encoding/json#Marshal
-      severity_score: 25
-      confidence_score: 100
-      exploitability_score: 80
-      risk_score: 61
-      risk_justification: Typo de tag `omitempty`; solo afecta serialización, sin impacto de seguridad claro.
-    patterns:
-      - pattern: |
-          type $T1 struct {
-            ...
-            $X $T2 `$TAG`
-            ...
-          }
-      - focus-metavariable: $TAG
-      - metavariable-regex:
-          metavariable: $TAG
-          regex: >-
-            .*(json|yaml|xml):"omitempty
+version https://git-lfs.github.com/spec/v1
+oid sha256:a16f2a3e57e7458243f0b030bbbf9e26c9624f8f019dd288b2710d3bd7507389
+size 1029

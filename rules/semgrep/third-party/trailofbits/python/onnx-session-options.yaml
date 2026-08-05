@@ -1,28 +1,3 @@
-rules:
-  - id: onnx-session-options
-    message: Loading custom operator libraries can result in arbitrary code execution
-    languages: [python]
-    severity: ERROR
-    metadata:
-      category: security
-      cwe: "CWE-676: Use of Potentially Dangerous Function"
-      subcategory: [audit]
-      confidence: MEDIUM
-      likelihood: MEDIUM
-      impact: HIGH
-      technology: [onnx]
-      description: "Potential arbitrary code execution from `ONNX` library loading"
-      references:
-        - https://onnxruntime.ai/docs/reference/operators/add-custom-op.html
-
-      severity_score: 100
-      confidence_score: 60
-      exploitability_score: 40
-      risk_score: 73
-      risk_justification: register_custom_ops_library dinámico carga código nativo (RCE); requiere ruta no confiable.
-    patterns:
-      - pattern-inside: |
-          $SESSION = onnxruntime.SessionOptions(...)
-          ...
-      - pattern: $SESSION.register_custom_ops_library(...)
-      - pattern-not: $SESSION.register_custom_ops_library("...")
+version https://git-lfs.github.com/spec/v1
+oid sha256:afc16374c9af2362a8c7befde470f82d0a5db3363170433f26dbc3403bf1415f
+size 1050

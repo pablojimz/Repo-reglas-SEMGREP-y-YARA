@@ -1,32 +1,3 @@
-rules:
-  - id: gpg-insecure-flags
-    message: Found `gpg` command using insecure flags
-    languages: [generic]
-    severity: WARNING
-    metadata:
-      category: security
-      subcategory: [audit]
-      technology: [shell]
-      cwe: "CWE-295: Improper Certificate Validation"
-      confidence: MEDIUM
-      likelihood: MEDIUM
-      impact: HIGH
-      references:
-        - https://www.gnupg.org/gph/de/manual/r1023.html
-      severity_score: 62.5
-      confidence_score: 100
-      exploitability_score: 80
-      risk_score: 78
-      risk_justification: 'FALTA DATO: idem ejecución, conservador=80. Bundle mezcla flags graves (skip-verify/ignore-*-error) con otras menores (allow-weak-digest); punto medio.'
-    pattern-either:
-      - pattern: gpg ... --allow-non-selfsigned-uid
-      - pattern: gpg ... --allow-freeform-uid
-      - pattern: gpg ... --allow-old-cipher-algos
-      - pattern: gpg ... --allow-weak-digest-algos
-      - pattern: gpg ... --allow-weak-key-signatures
-      - pattern: gpg ... --ignore-time-conflict
-      - pattern: gpg ... --ignore-valid-from
-      - pattern: gpg ... --ignore-crc-error
-      - pattern: gpg ... --ignore-mdc-error
-      - pattern: gpg ... --skip-verify
-      - pattern: gpg ... --no-require-cross-certification
+version https://git-lfs.github.com/spec/v1
+oid sha256:3951c0fc9bb078e97ee175b8264bb805aae153c8c2bda8f000f213ea4165e134
+size 1295

@@ -1,15 +1,3 @@
----
-- name: Semgrep tests
-  hosts: all
-  tasks:
-    - name: Positive test (rpm-key-validate-certs-disabled)
-      ansible.builtin.rpm_key:
-        state: present
-        key: https://example.com/RPM-GPG-KEY.dag.txt
-        # ruleid: rpm-key-validate-certs-disabled
-        validate_certs: false
-    - name: Negative test (rpm-key-unencrypted-url and rpm-key-validate-certs-disabled)
-      ansible.builtin.rpm_key:
-        # ok: rpm-key-validate-certs-disabled
-        state: present
-        key: https://example.com/RPM-GPG-KEY.dag.txt
+version https://git-lfs.github.com/spec/v1
+oid sha256:0d69571318a981e34f2e8d05ca30eada6d6c47176c9d2e98aa132c8f116e64db
+size 551

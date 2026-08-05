@@ -1,24 +1,3 @@
-rules:
-  - id: redis-unencrypted-transport
-    message: |
-      Found unencrypted Redis connection, prefer TLS encrypted `rediss://` transport
-    languages: [generic]
-    severity: WARNING
-    metadata:
-      category: security
-      subcategory: [audit]
-      cwe: "CWE-319: Cleartext Transmission of Sensitive Information"
-      confidence: HIGH
-      likelihood: HIGH
-      impact: HIGH
-      technology: [redis]
-      references:
-        - https://redis.io/docs/latest/develop/connect/cli/#host-port-password-and-database
-      severity_score: 50
-      confidence_score: 100
-      exploitability_score: 80
-      risk_score: 72
-      risk_justification: 'FALTA DATO: idem ejecución, conservador=80. Esquema redis:// es cleartext por definición, sin uso seguro.'
-    options:
-      generic_ellipsis_max_span: 0
-    pattern: redis://...
+version https://git-lfs.github.com/spec/v1
+oid sha256:24ca0b502ce6da8ac86b505277bdc55530805b0b30fcfe941f7423027dc6903f
+size 865

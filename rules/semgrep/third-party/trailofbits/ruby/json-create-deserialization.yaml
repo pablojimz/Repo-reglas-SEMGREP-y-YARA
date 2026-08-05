@@ -1,34 +1,3 @@
-rules:
-  - id: json-create-deserialization
-    message: |
-      Found `json_create` class method. This implies custom JSON deserialization
-      is occuring. This can lead to RCE and other deserialization-type bugs.
-      Usage should be audited and, at least, fuzzed.
-    languages: [ruby]
-    severity: INFO
-    metadata:
-      category: security
-      cwe: "CWE-502: Deserialization of Untrusted Data"
-      subcategory: [audit]
-      confidence: LOW
-      likelihood: LOW
-      impact: HIGH
-      technology: [ruby]
-      references:
-        - https://github.blog/2024-06-20-execute-commands-by-sending-json-learn-how-unsafe-deserialization-vulnerabilities-work-in-ruby-projects/
-        - https://github.com/github/codeql/blob/main/ruby/ql/lib/codeql/ruby/security/UnsafeDeserializationCustomizations.qll
-        - https://stackoverflow.com/questions/17226402/whats-the-difference-between-json-load-and-json-parse-methods-of-ruby-lib
-      severity_score: 25
-      confidence_score: 100
-      exploitability_score: 40
-      risk_score: 51
-      risk_justification: Reconocimiento de hook de deserialización custom; requiere JSON.load con create_additions sobre dato no confiable en otra parte.
-    patterns:
-      - pattern-inside: |
-          class $CLS
-            ...
-          end
-      - pattern: |
-          def self.json_create($OBJ)
-            ...
-          end
+version https://git-lfs.github.com/spec/v1
+oid sha256:e0aba0682ad6fe00f6b56650224c8c994507c1f8d08fd56a9630f0020c74d0af
+size 1411

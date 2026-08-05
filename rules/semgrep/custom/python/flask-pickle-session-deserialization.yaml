@@ -1,27 +1,3 @@
-rules:
-  - id: flask-pickle-session-deserialization
-    languages: [python]
-    severity: ERROR
-    message: >-
-      Found pickle.loads()/pickle.load() applied to data read from a
-      cookie/session/request object. Flask's default client-side session
-      cookie is only signed (itsdangerous), not encrypted, and some custom
-      session backends still round-trip through pickle - if an attacker can
-      forge or influence the pickled bytes (e.g. a signing-key leak, or a
-      custom unsigned session store), pickle.loads() executes arbitrary code
-      during deserialization. Never pickle.loads() data that originates from
-      the client; use a JSON-based session serializer instead.
-    metadata:
-      category: security
-      confidence: MEDIUM
-      cwe: "CWE-502: Deserialization of Untrusted Data"
-      owasp: ["A08:2021 - Software and Data Integrity Failures"]
-      references:
-        - https://cwe.mitre.org/data/definitions/502.html
-        - https://flask.palletsprojects.com/en/latest/api/#sessions
-        - https://blog.trailofbits.com/2021/03/15/never-a-dill-moment-exploiting-machine-learning-pickle-files/
-    patterns:
-      - pattern-either:
-          - pattern: pickle.loads(request.cookies.get(...))
-          - pattern: pickle.loads(session[...])
-          - pattern: pickle.loads(request.$METHOD(...))
+version https://git-lfs.github.com/spec/v1
+oid sha256:2f4a70d63d91335470ddbfd460f7a38b770f41103e0de551986929c750cc5bf8
+size 1745

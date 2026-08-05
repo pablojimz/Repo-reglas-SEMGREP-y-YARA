@@ -1,15 +1,3 @@
----
-- name: Semgrep tests
-  hosts: all
-  tasks:
-    - name: Positive test
-      ansible.builtin.dnf:
-        name: https://example.com/example.rpm
-        state: present
-        # ruleid: dnf-validate-certs-disabled
-        validate_certs: false
-    - name: Negative test (dnf-unencrypted-url and dnf-validate-certs-disabled)
-      ansible.builtin.dnf:
-        # ok: dnf-validate-certs-disabled
-        name: https://example.com/example.rpm
-        state: present
+version https://git-lfs.github.com/spec/v1
+oid sha256:33716c86269b87f8462aefac2b54e9364db74a21333283ef353c02f8822624a3
+size 479

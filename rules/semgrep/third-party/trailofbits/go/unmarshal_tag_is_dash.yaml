@@ -1,33 +1,3 @@
-rules:
-  - id: unmarshal-tag-is-dash
-    message: >-
-      Struct field can be decoded with the `-` key because the JSON tag starts with a `-` but is followed by a comma.
-    languages: [go]
-    severity: WARNING
-    metadata:
-      cwe: "CWE-172: Encoding Error"
-      category: security
-      subcategory: [vuln]
-      confidence: HIGH
-      likelihood: MEDIUM
-      impact: MEDIUM
-      technology: [--no-technology--]
-      references:
-        - https://pkg.go.dev/encoding/json#Marshal
-      severity_score: 50
-      confidence_score: 100
-      exploitability_score: 80
-      risk_score: 72
-      risk_justification: Tag mal formado permite decodificar campo que se creía excluido; puede exponer asignación no intencionada.
-    patterns:
-      - pattern: |
-          type $T1 struct {
-            ...
-            $X $T2 `$TAG`
-            ...
-          }
-      - focus-metavariable: $TAG
-      - metavariable-regex:
-          metavariable: $TAG
-          regex: >-
-            .*(json|yaml|xml):"-,[^"]*"
+version https://git-lfs.github.com/spec/v1
+oid sha256:238651cea3ab380e82146699e765a2c68f2a4654c3d12c4bd94b5e06fe2eb12f
+size 1045

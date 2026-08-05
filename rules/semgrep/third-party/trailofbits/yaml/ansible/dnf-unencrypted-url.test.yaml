@@ -1,14 +1,3 @@
----
-- name: Semgrep tests
-  hosts: all
-  tasks:
-    - name: Positive test
-      ansible.builtin.dnf:
-        # ruleid: dnf-unencrypted-url
-        name: http://example.com/example.rpm
-        state: present
-    - name: Negative test
-      ansible.builtin.dnf:
-        # ok: dnf-unencrypted-url
-        name: https://example.com/example.rpm
-        state: present
+version https://git-lfs.github.com/spec/v1
+oid sha256:58a8af10ad8129b146018295145bfd4a363fa735d98cc372fefc014da236eb45
+size 377

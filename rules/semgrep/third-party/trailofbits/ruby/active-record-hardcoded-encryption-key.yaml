@@ -1,26 +1,3 @@
-rules:
-  - id: active-record-hardcoded-encryption-key
-    message: |
-      Found hardcoded ActiveRecord encryption key
-    languages: [ruby]
-    severity: WARNING
-    metadata:
-      category: security
-      cwe: "CWE-798: Use of Hard-coded Credentials"
-      subcategory: [audit]
-      confidence: HIGH
-      likelihood: HIGH
-      impact: HIGH
-      technology: [rails, activerecord]
-      references:
-        - https://guides.rubyonrails.org/active_record_encryption.html#supported-types
-      severity_score: 75
-      confidence_score: 100
-      exploitability_score: 100
-      risk_score: 89
-      risk_justification: Clave de cifrado ActiveRecord hardcodeada; secreto expuesto en código sin necesitar ejecución.
-    pattern-either:
-      - pattern: config.active_record.encryption.primary_key = "..."
-      - pattern: config.active_record.encryption.primary_key = [..., "...", ...]
-      - pattern: config.active_record.encryption.deterministic_key = "..."
-      - pattern: config.active_record.encryption.deterministic_key = [..., "...", ...]
+version https://git-lfs.github.com/spec/v1
+oid sha256:9ccb65a83cd3518f42d823f3378ec9211ebe29fd6a5c68613b72c2dfb22b881c
+size 1078

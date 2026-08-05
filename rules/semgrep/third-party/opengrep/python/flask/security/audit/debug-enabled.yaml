@@ -1,33 +1,3 @@
-rules:
-- id: debug-enabled
-  patterns:
-  - pattern-inside: |
-      import flask
-      ...
-  - pattern: $APP.run(..., debug=True, ...)
-  message: >-
-    Detected Flask app with debug=True. Do not deploy to production with this flag enabled
-    as it will leak sensitive information. Instead, consider using Flask configuration
-    variables or setting 'debug' using system environment variables.
-  metadata:
-    cwe:
-    - 'CWE-489: Active Debug Code'
-    owasp: 'A06:2017 - Security Misconfiguration'
-    references:
-    - https://labs.detectify.com/2015/10/02/how-patreon-got-hacked-publicly-exposed-werkzeug-debugger/
-    category: security
-    technology:
-    - flask
-    subcategory:
-    - vuln
-    likelihood: HIGH
-    impact: MEDIUM
-    confidence: HIGH
-    severity_score: 75
-    confidence_score: 100
-    exploitability_score: 40
-    risk_score: 74
-    risk_justification: debug=True exacto; werkzeug debugger puede dar RCE pero requiere desplegarse así en producción (flag de debug).
-  severity: WARNING
-  languages:
-  - python
+version https://git-lfs.github.com/spec/v1
+oid sha256:6f29289839164ae3315ed447f58a2796bb9dc2c2a3f30f916b060e84da0fb7ef
+size 1072

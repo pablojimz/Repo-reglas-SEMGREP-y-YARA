@@ -1,35 +1,3 @@
-rules:
-- id: scalac-debug
-  patterns:
-  - pattern-either:
-    - pattern: scalacOptions ... "-Vdebug"
-    - pattern: scalacOptions ... "-Ydebug"
-  message: >-
-    Scala applications built with `debug` set to true in production may leak debug information to attackers.
-    Debug mode also affects performance and reliability.
-    Remove it from configuration.
-  languages: [generic]
-  severity: WARNING
-  paths:
-    include:
-    - '*.sbt*'
-  metadata:
-    category: security
-    cwe:
-    - 'CWE-489: Active Debug Code'
-    owasp: 'A05:2021 - Security Misconfiguration'
-    technology:
-    - scala
-    - sbt
-    references:
-    - https://docs.scala-lang.org/overviews/compiler-options/index.html
-    confidence: MEDIUM
-    subcategory:
-    - audit
-    likelihood: LOW
-    impact: LOW
-    severity_score: 25
-    confidence_score: 100
-    exploitability_score: 40
-    risk_score: 51
-    risk_justification: Flag -Vdebug/-Ydebug en build; literal exacto, pero requiere que ese perfil se use en producción.
+version https://git-lfs.github.com/spec/v1
+oid sha256:b0276ef2af60261066b575fc155c6d0c608d4ae278fa5d0ede6b96e4ccf5d612
+size 1036

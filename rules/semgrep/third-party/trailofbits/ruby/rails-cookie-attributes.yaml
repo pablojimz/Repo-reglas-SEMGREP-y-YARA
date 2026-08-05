@@ -1,31 +1,3 @@
-rules:
-  - id: rails-cookie-attributes
-    message: |
-      Found Rails cookie set with insecure attribute.
-    languages: [ruby]
-    severity: WARNING
-    metadata:
-      category: security
-      cwe: "CWE-345: Insufficient Verification of Data Authenticity"
-      subcategory: [audit]
-      confidence: HIGH
-      likelihood: HIGH
-      impact: LOW
-      technology: [rails]
-      references:
-        - https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
-        - https://api.rubyonrails.org/classes/ActionDispatch/Session/CookieStore.html
-      severity_score: 50
-      confidence_score: 45
-      exploitability_score: 80
-      risk_score: 56
-      risk_justification: 'httponly/secure false son claramente inseguros, pero incluir same_site: :lax (default razonable) reduce precisión del patrón.'
-    patterns:
-      - pattern-either:
-          - pattern-inside: cookies[$ANY] = ...
-          - pattern-inside: cookies. ... .$ATTR[$ANY] = ...
-      - pattern-either:
-          - pattern: "{..., same_site: :none, ...}"
-          - pattern: "{..., same_site: :lax, ...}"
-          - pattern: "{..., httponly: false, ...}"
-          - pattern: "{..., secure: false, ...}"
+version https://git-lfs.github.com/spec/v1
+oid sha256:6f30ffe598b6d7ad92898d487076dd26020212089f0419dd46e0ed79da94e4a8
+size 1224
