@@ -1,0 +1,21 @@
+# CODEOWNERS para rules/semgrep/
+#
+# Cualquier cambio bajo third-party/ (reglas de terceros con licencias distintas)
+# requiere aprobación explícita, ya que afecta al cumplimiento de licencias del
+# repositorio completo. Ajustar los usuarios/equipos abajo a los responsables reales.
+
+# Requiere revisión para TODO cambio en reglas de terceros
+/rules/semgrep/third-party/                    @TU_USUARIO_O_EQUIPO
+
+# Responsables por fuente (opcional, más granular)
+/rules/semgrep/third-party/trailofbits/         @TU_USUARIO_O_EQUIPO
+/rules/semgrep/third-party/opengrep/            @TU_USUARIO_O_EQUIPO
+/rules/semgrep/third-party/elttam/              @TU_USUARIO_O_EQUIPO
+/rules/semgrep/third-party/0xdea/               @TU_USUARIO_O_EQUIPO
+
+# Reglas propias del repositorio
+/rules/semgrep/custom/                          @TU_USUARIO_O_EQUIPO
+
+# Metadatos y documentación
+/rules/semgrep/registry.json                    @TU_USUARIO_O_EQUIPO
+/rules/semgrep/NOTICE.md                        @TU_USUARIO_O_EQUIPO
