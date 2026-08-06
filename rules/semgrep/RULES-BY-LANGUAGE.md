@@ -22,11 +22,11 @@ Desglose de las **778 reglas** instaladas en `rules/semgrep/` (ver [`NOTICE.md`]
 | Rust | 1 | 0 | 0 | 0 | 4 | **5** |
 | Clojure | 0 | 3 | 0 | 0 | 1 | **4** |
 | JSON | 0 | 3 | 0 | 0 | 1 | **4** |
-| Bash | 0 | 1 | 0 | 0 | 1 | **2** |
+| Bash | 0 | 1 | 0 | 0 | 9 | **10** |
 | HTML | 0 | 1 | 0 | 0 | 1 | **2** |
-| OCaml | 0 | 1 | 0 | 0 | 1 | **2** |
-| Dockerfile | 0 | 0 | 0 | 0 | 2 | **2** |
-| **TOTAL** | **112** | **556** | **6** | **40** | **64** | **778** |
+| OCaml | 0 | 1 | 0 | 0 | 3 | **4** |
+| Dockerfile | 0 | 0 | 0 | 0 | 12 | **12** |
+| **TOTAL** | **112** | **556** | **6** | **40** | **84** | **798** |
 
 ## Los 5 lenguajes con más cobertura
 

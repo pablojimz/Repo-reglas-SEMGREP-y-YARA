@@ -1,0 +1,68 @@
+rules:
+  - id: suspicious-systemctl-disable-stop
+    message: "Detecta intentos de deshabilitar o detener servicios del sistema, lo que puede ser indicativo de actividad maliciosa para eliminar persistencia o evadir la detección."
+    severity: WARNING
+    languages:
+      - sh
+    patterns:
+      - pattern-regex: "systemctl (disable|stop) \\S+"
+    metadata:
+      severity_score: 75
+      confidence_score: 100
+      exploitability_score: 80
+      risk_score: 84
+      risk_justification: "La deshabilitación o detención de servicios puede impactar la seguridad del sistema y es un patrón claro de actividad maliciosa o de limpieza de un atacante."
+      category: "security"
+      owasp:
+        - A07:2021 - Identification and Authentication Failures
+
+  - id: suspicious-cron-cleanup-grep
+    message: "Detecta el uso de 'grep -vE' con palabras clave (wget, curl, /dev/tcp, base64 -d) típicamente usadas para eliminar entradas maliciosas de trabajos cron o perfiles de shell. Esto puede ser una rutina de limpieza después de un ataque o para prevenir la detección."
+    severity: ERROR
+    languages:
+      - sh
+    patterns:
+      - pattern-regex: "grep -vE 'wget|curl|/dev/tcp|/tmp|\\.sh|nc|bash -i|sh -i|base64 -d'"
+    metadata:
+      severity_score: 75
+      confidence_score: 100
+      exploitability_score: 80
+      risk_score: 84
+      risk_justification: "La manipulación de cronjobs para eliminar rastros con palabras clave maliciosas es un patrón claro de post-explotación o evasión de detección."
+      category: "security"
+      owasp:
+        - A07:2021 - Identification and Authentication Failures
+
+  - id: suspicious-binary-truncation
+    message: "Detecta intentos de truncar (sobrescribir con contenido vacío) binarios críticos del sistema o archivos sospechosos, a menudo utilizado por malware para autoeliminarse o deshabilitar componentes."
+    severity: CRITICAL
+    languages:
+      - sh
+    patterns:
+      - pattern-regex: "echo >/?(bin|usr/bin)/\\S+"
+    metadata:
+      severity_score: 100
+      confidence_score: 100
+      exploitability_score: 80
+      risk_score: 95
+      risk_justification: "La truncación de binarios del sistema es una acción altamente destructiva, indicativa de un ataque severo o intento de limpieza post-explotación."
+      category: "security"
+      owasp:
+        - A07:2021 - Identification and Authentication Failures
+
+  - id: suspicious-pkill-9
+    message: "Detecta la terminación forzada de procesos (pkill -9) con nombres o rutas sospechosas, lo que puede ser un intento de malware para detener agentes de detección, procesos legítimos o auto-destruirse."
+    severity: CRITICAL
+    languages:
+      - sh
+    patterns:
+      - pattern-regex: "pkill -9 (-f )?\"?/?(bin|usr/bin)/\\S+\"?"
+    metadata:
+      severity_score: 100
+      confidence_score: 100
+      exploitability_score: 80
+      risk_score: 95
+      risk_justification: "La terminación forzada de procesos sospechosos es una acción crítica que puede indicar evasión, desestabilización del sistema o limpieza de un atacante."
+      category: "security"
+      owasp:
+        - A07:2021 - Identification and Authentication Failures

@@ -1,0 +1,199 @@
+rules:
+  - id: dockerfile-no-latest-tag
+    message: "Evita usar la etiqueta 'latest' en las imágenes base de Dockerfiles, ya que conduce a compilaciones inconsistentes e impredecibles y dificulta el seguimiento de las versiones de seguridad."
+    severity: WARNING
+    languages:
+      - dockerfile
+    patterns:
+      - pattern-regex: "(?i)^FROM\\s+\\S+:(latest|:?latest)$"
+    metadata:
+      severity_score: 50
+      confidence_score: 100
+      exploitability_score: 100
+      risk_score: 78
+      risk_justification: "El uso de 'latest' reduce la estabilidad y auditabilidad de seguridad, exponiendo a riesgos de versiones incontroladas."
+      category: "security"
+      owasp:
+        - A05:2021 - Security Misconfiguration
+
+  - id: dockerfile-run-as-root
+    message: "Ejecutar comandos 'RUN' o 'CMD' como usuario 'root' por defecto concede privilegios excesivos. Utiliza la instrucción 'USER' para cambiar a un usuario con menos privilegios."
+    severity: ERROR
+    languages:
+      - dockerfile
+    patterns:
+      - pattern-regex: "(?i)^\\s*(RUN|CMD)\\s+(?!USER\\s)(?!#).*$"
+      - pattern-not-regex: "(?i)^\\s*USER\\s+\\S+$"
+      - pattern-not-regex: "(?i)^\\s*HEALTHCHECK\\s+.*$"
+      - pattern-not-regex: "(?i)^\\s*ENTRYPOINT\\s+.*$"
+    metadata:
+      severity_score: 75
+      confidence_score: 60
+      exploitability_score: 100
+      risk_score: 77
+      risk_justification: "Ejecutar como root es un riesgo grave de escalada de privilegios; aunque la detección con regex es un poco ruidosa, el impacto es alto."
+      category: "security"
+      owasp:
+        - A05:2021 - Security Misconfiguration
+        - A01:2021 - Broken Access Control
+
+  - id: dockerfile-unnecessary-expose
+    message: "Exponer puertos no utilizados aumenta la superficie de ataque del contenedor. Solo expón los puertos necesarios para tu aplicación."
+    severity: INFO
+    languages:
+      - dockerfile
+    patterns:
+      - pattern-regex: "(?i)^EXPOSE\\s+\\d+$"
+    metadata:
+      severity_score: 25
+      confidence_score: 100
+      exploitability_score: 100
+      risk_score: 66
+      risk_justification: "Aumenta la superficie de ataque; aunque no es un defecto crítico, es una mala práctica de configuración."
+      category: "security"
+      owasp:
+        - A05:2021 - Security Misconfiguration
+
+  - id: dockerfile-secrets-in-image
+    message: "Evita añadir archivos que contengan secretos (API keys, contraseñas, tokens) directamente al Dockerfile o a la imagen. Utiliza secretos de Docker, variables de entorno temporales o herramientas de orquestación."
+    severity: CRITICAL
+    languages:
+      - dockerfile
+    patterns:
+      - pattern-regex: "(?i)^(ADD|COPY)\\s+(?!--chown=\\S+\\s)([a-zA-Z0-9_-]+\\.(env|conf|yaml|yml|json|txt|pem|key|crt|ppk|p12|pfx|pkcs12|secret|passwd))\\s+/\\S+$"
+    metadata:
+      severity_score: 100
+      confidence_score: 60
+      exploitability_score: 100
+      risk_score: 88
+      risk_justification: "Fuga de secretos es un riesgo crítico; la detección por extensión de archivo es útil pero no infalible."
+      category: "security"
+      owasp:
+        - A04:2021 - Insecure Design
+        - A05:2021 - Security Misconfiguration
+
+  - id: dockerfile-unnecessary-packages
+    message: "Instalar paquetes innecesarios aumenta el tamaño de la imagen y su superficie de ataque. Minimiza las dependencias en la imagen final."
+    severity: INFO
+    languages:
+      - dockerfile
+    patterns:
+      - pattern-regex: "(?i)^RUN\\s+.*(apt-get|yum|apk)\\s+install\\s+(-y|--no-install-recommends|-qq|\\S+\\s+)*\\s*(vim|curl|wget|net-tools|tcpdump|nmap|telnet|strace|debugfs|gdb|gcc|make|git)(\\s+\\S+)*$"
+    metadata:
+      severity_score: 25
+      confidence_score: 100
+      exploitability_score: 100
+      risk_score: 66
+      risk_justification: "Instalar herramientas de depuración/red innecesarias aumenta la superficie de ataque sin ser una vulnerabilidad directa."
+      category: "security"
+      owasp:
+        - A05:2021 - Security Misconfiguration
+
+  - id: dockerfile-no-cache-cleanup
+    message: "No limpiar los cachés de paquetes después de la instalación puede dejar artefactos sensibles y aumentar el tamaño de la imagen. Limpia los cachés de paquetes (e.g., apt-get clean) en la misma capa 'RUN'."
+    severity: INFO
+    languages:
+      - dockerfile
+    patterns:
+      - pattern-regex: "(?i)^RUN\\s+(apt-get\\s+update\\s+&&\\s+apt-get\\s+install\\s+-[a-zA-Z]*y\\s+\\S+)(?!.*(apt-get\\s+clean|rm\\s+-rf\\s+/var/lib/apt/lists/\\*|rm\\s+-rf\\s+/var/cache/apk/\\*|rm\\s+-rf\\s+/tmp/\\*|rm\\s+-rf\\s+/var/tmp/\\*))"
+    metadata:
+      severity_score: 25
+      confidence_score: 60
+      exploitability_score: 100
+      risk_score: 54
+      risk_justification: "La falta de limpieza de cachés es una mala práctica con bajo impacto directo en seguridad, pero la detección es compleja."
+      category: "security"
+      owasp:
+        - A05:2021 - Security Misconfiguration
+
+  - id: dockerfile-copy-all-without-dockerignore
+    message: "Usar 'COPY . .' o 'ADD . .' sin un archivo '.dockerignore' puede copiar accidentalmente archivos sensibles (ej. credenciales, código fuente, git history) a la imagen."
+    severity: ERROR
+    languages:
+      - dockerfile
+    patterns:
+      - pattern-regex: "(?i)^\\s*(COPY|ADD)\\s+\\.\\s+\\.\\s*$"
+      - pattern-not-regex: ".*\\.dockerignore$"
+    metadata:
+      severity_score: 75
+      confidence_score: 100
+      exploitability_score: 100
+      risk_score: 89
+      risk_justification: "Copia indiscriminada sin .dockerignore es una fuga de información sensible que se activa en la construcción."
+      category: "security"
+      owasp:
+        - A04:2021 - Insecure Design
+        - A05:2021 - Security Misconfiguration
+
+  - id: dockerfile-add-remote-url
+    message: "Usar 'ADD' con URLs remotas puede introducir código no confiable o malicioso si la fuente remota es comprometida o no verificada. Prefiere 'COPY' o 'curl/wget' con verificación de hash."
+    severity: CRITICAL
+    languages:
+      - dockerfile
+    patterns:
+      - pattern-regex: "(?i)^ADD\\s+https?://\\S+\\s+/\\S+$"
+    metadata:
+      severity_score: 100
+      confidence_score: 100
+      exploitability_score: 100
+      risk_score: 100
+      risk_justification: "Descarga de código remoto no verificado es una vulnerabilidad de integridad de software crítica y totalmente explotable en la construcción."
+      category: "security"
+      owasp:
+        - A04:2021 - Insecure Design
+        - A08:2021 - Software and Data Integrity Failures
+
+  - id: dockerfile-hardcoded-passwords
+    message: "Evita codificar contraseñas por defecto o débiles en el Dockerfile o en variables de entorno. Utiliza secretos de Docker, un sistema de gestión de secretos o variables de entorno inyectadas en tiempo de ejecución."
+    severity: CRITICAL
+    languages:
+      - dockerfile
+    patterns:
+      - pattern-regex: "(?i)^(ENV|ARG)\\s+(.+_PASS(WORD)?|API_KEY|SECRET_KEY|AUTH_TOKEN)\\s*=\\s*\"?(password|123456|admin|root|changeme|test|default|toor)\"?$"
+    metadata:
+      severity_score: 100
+      confidence_score: 60
+      exploitability_score: 100
+      risk_score: 88
+      risk_justification: "Contraseñas codificadas son un fallo de autenticación crítico, aunque la detección por palabras clave puede no ser exhaustiva."
+      category: "security"
+      owasp:
+        - A07:2021 - Identification and Authentication Failures
+        - A04:2021 - Insecure Design
+
+  - id: dockerfile-ssh-server-in-image
+    message: "No expongas puertos SSH (22 o 2222) en tus contenedores de producción. Esto añade una superficie de ataque innecesaria y complejiza la gestión de accesos. Utiliza 'docker exec' o herramientas de orquestación."
+    severity: CRITICAL
+    languages:
+      - dockerfile
+    patterns:
+      - pattern-regex: "(?i)^EXPOSE\\s+(22|2222)"
+    metadata:
+      severity_score: 100
+      confidence_score: 100
+      exploitability_score: 100
+      risk_score: 100
+      risk_justification: "Exponer puertos SSH (22 o 2222) en un contenedor es una configuración insegura crítica con alta explotabilidad."
+      category: "security"
+      owasp:
+        - A05:2021 - Security Misconfiguration
+        - A01:2021 - Broken Access Control
+  - id: dockerfile-ssh-server-install
+    message: "No instales ni ejecutes un servidor SSH dentro de tus contenedores de producción. Esto añade una superficie de ataque innecesaria y complejiza la gestión de accesos. Utiliza 'docker exec' o herramientas de orquestación."
+    severity: CRITICAL
+    languages:
+      - dockerfile
+    patterns:
+      - pattern: |
+          RUN !dockerfile_sh!
+            ... !sh_cmd! apt-get install ... openssh-server ...
+    metadata:
+      severity_score: 100
+      confidence_score: 100
+      exploitability_score: 100
+      risk_score: 100
+      risk_justification: "Instalar un servidor SSH en un contenedor es una configuración insegura crítica con alta explotabilidad."
+      category: "security"
+      owasp:
+        - A05:2021 - Security Misconfiguration
+        - A01:2021 - Broken Access Control

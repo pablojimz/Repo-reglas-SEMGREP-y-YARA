@@ -1,0 +1,143 @@
+rules:
+  - id: ocaml-command-injection
+    message: "Detecta la ejecución de comandos externos (Sys.command) con entrada potencialmente no sanitizada, lo que podría llevar a vulnerabilidades de inyección de comandos."
+    severity: CRITICAL
+    languages:
+      - ocaml
+    patterns:
+      - pattern: Sys.command $CMD
+      - pattern-not: Sys.command "$LITERAL_CMD"
+    metadata:
+      severity_score: 100
+      confidence_score: 60
+      exploitability_score: 100
+      risk_score: 88
+      risk_justification: "La inyección de comandos es un riesgo crítico con alta explotabilidad, aunque la detección puede ser ruidosa si la sanitización no es obvia."
+      category: "security"
+      owasp:
+        - A03:2021 - Injection
+
+  - id: ocaml-insecure-deserialization
+    message: "Detecta la deserialización de datos a través de Marshal.from_channel o Marshal.from_string que podrían provenir de fuentes no confiables, lo que puede llevar a la ejecución remota de código."
+    severity: CRITICAL
+    languages:
+      - ocaml
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: Marshal.from_channel $CHANNEL
+              - pattern-not: Marshal.from_channel Pervasives.stdin
+          - patterns:
+              - pattern: Marshal.from_string $STRING
+              - pattern-not: Marshal.from_string "$LITERAL_STRING"
+    metadata:
+      severity_score: 100
+      confidence_score: 60
+      exploitability_score: 100
+      risk_score: 88
+      risk_justification: "La deserialización insegura es un riesgo crítico con alta explotabilidad que puede llevar a RCE, aunque la confianza es media por el contexto."
+      category: "security"
+      owasp:
+        - A08:2021 - Software and Data Integrity Failures
+
+  - id: ocaml-information-leakage
+    message: "Detecta la exposición de información sensible, como trazas de pila o mensajes de error detallados, a través de funciones como Printexc.print_backtrace o Printexc.to_string, especialmente si se imprimen a la salida estándar de error."
+    severity: WARNING
+    languages:
+      - ocaml
+    patterns:
+      - pattern-either:
+          - pattern: Printexc.print_backtrace $ARG
+          - patterns:
+              - pattern: Printf.eprintf $MSG
+              - pattern-inside: Printexc.to_string $EXN
+    metadata:
+      severity_score: 75
+      confidence_score: 60
+      exploitability_score: 80
+      risk_score: 72
+      risk_justification: "La fuga de información puede exponer detalles internos, lo que es un riesgo moderado. La confianza es media ya que Printexc también se usa para logs legítimos."
+      category: "security"
+      owasp:
+        - A04:2021 - Insecure Design
+        - A05:2021 - Security Misconfiguration
+
+  - id: ocaml-hardcoded-secret
+    message: "Detecta secretos codificados, como claves API o contraseñas, directamente en el código fuente de OCaml."
+    severity: CRITICAL
+    languages:
+      - ocaml
+    patterns:
+      - pattern: let $VAR = "$SECRET_VALUE"
+      - pattern-regex: "(?i)(api_key|password|secret|token)"
+        selector: $VAR
+    metadata:
+      severity_score: 75
+      confidence_score: 60
+      exploitability_score: 80
+      risk_score: 72
+      risk_justification: "La exposición de secretos es un riesgo significativo, fácilmente explotable si se descubren, aunque la detección puede requerir ajuste fino para evitar falsos positivos."
+      category: "security"
+      owasp:
+        - A04:2021 - Insecure Design
+        - A05:2021 - Security Misconfiguration
+
+  - id: ocaml-unsafe-file-operation
+    message: "Detecta operaciones de archivo que construyen rutas a partir de entradas no sanitizadas, lo que podría conducir a la manipulación de rutas o acceso arbitrario a archivos."
+    severity: CRITICAL
+    languages:
+      - ocaml
+    patterns:
+      - pattern: Sys.file_exists ($UNSANITIZED_INPUT)
+      - pattern: Unix.openfile ($UNSANITIZED_INPUT) $FLAGS $MODE
+      - pattern: Pervasives.open_in ($UNSANITIZED_INPUT)
+      - pattern: Pervasives.open_out ($UNSANITIZED_INPUT)
+    metadata:
+      severity_score: 75
+      confidence_score: 60
+      exploitability_score: 80
+      risk_score: 72
+      risk_justification: "Las operaciones de archivo inseguras pueden llevar a acceso no autorizado o daño al sistema si las rutas no se sanitizan adecuadamente."
+      category: "security"
+      owasp:
+        - A03:2021 - Injection
+        - A01:2021 - Broken Access Control
+
+  - id: ocaml-log-forging
+    message: "Detecta la inyección de datos controlados por el usuario directamente en las funciones de registro sin sanitización, lo que permite forjar entradas de registro o controlar el formato."
+    severity: WARNING
+    languages:
+      - ocaml
+    patterns:
+      - pattern: Printf.printf $FORMAT ($UNSANITIZED_INPUT)
+      - pattern: Printf.eprintf $FORMAT ($UNSANITIZED_INPUT)
+      - pattern: Format.fprintf $FORMAT ($UNSANITIZED_INPUT)
+    metadata:
+      severity_score: 50
+      confidence_score: 60
+      exploitability_score: 80
+      risk_score: 61
+      risk_justification: "La inyección en logs puede ocultar actividades maliciosas o engañar a los sistemas de monitoreo, aunque no suele ser un riesgo de ejecución de código directo."
+      category: "security"
+      owasp:
+        - A04:2021 - Insecure Design
+        - A07:2021 - Identification and Authentication Failures
+
+  - id: ocaml-weak-cryptography
+    message: "Detecta el uso de funciones criptográficas débiles o obsoletas (como MD5 o SHA1) para fines de seguridad que requieren una resistencia fuerte a colisiones o un hashing seguro (por ejemplo, contraseñas, firmas digitales)."
+    severity: WARNING
+    languages:
+      - ocaml
+    patterns:
+      - pattern: Digest.string ($ANY)
+      - pattern: Md5.hash ($ANY)
+      - pattern: Sha1.hash ($ANY)
+    metadata:
+      severity_score: 50
+      confidence_score: 100
+      exploitability_score: 80
+      risk_score: 73
+      risk_justification: "El uso de criptografía débil compromete la seguridad de los datos, permitiendo ataques de fuerza bruta o colisiones."
+      category: "security"
+      owasp:
+        - A02:2021 - Cryptographic Failures
