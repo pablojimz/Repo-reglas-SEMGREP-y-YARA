@@ -1,0 +1,55 @@
+name: Publish scored YARA rules
+
+# Regenerates dist/yara_scored/ (the curated, ready-to-use ruleset with
+# risk scores embedded in each rule's meta:) whenever the scores JSON or
+# the source submodule changes on main, and commits the result back.
+#
+# Runs on ubuntu-latest on purpose: several source rules (esp. the THOR
+# webshell signatures) embed real malicious code fragments as detection
+# strings, which Windows Defender treats as an actual threat and silently
+# quarantines. Linux runners have no such AV interference.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "yara_scores_output/yara_rule_scores.json"
+      - "yara_rules/**"
+      - "scripts/generate_scored_yara.py"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-scored-yara-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Generate curated scored ruleset
+        run: python scripts/generate_scored_yara.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add dist/yara_scored/
+          if git diff --cached --quiet; then
+            echo "No changes to publish."
+          else
+            git commit -m "chore: regenerate scored YARA ruleset [skip ci]"
+            git push
+          fi
