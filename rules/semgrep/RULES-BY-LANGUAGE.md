@@ -4,16 +4,16 @@ Desglose de las **778 reglas** instaladas en `rules/semgrep/` (ver [`NOTICE.md`]
 
 | Lenguaje | trailofbits | opengrep | elttam | 0xdea | propias | **Total** |
 |---|---:|---:|---:|---:|---:|---:|
-| Python | 20 | 124 | 0 | 0 | 7 | **151** |
+| Python | 20 | 124 | 0 | 0 | 10 | **154** |
 | Java / Kotlin | 0 | 87 | 0 | 0 | 0 | **87** |
-| JavaScript / TypeScript | 9 | 71 | 0 | 0 | 4 | **84** |
+| JavaScript / TypeScript | 9 | 71 | 0 | 0 | 5 | **85** |
 | HCL / Terraform | 9 | 61 | 0 | 0 | 0 | **70** |
 | Go | 17 | 50 | 2 | 0 | 0 | **69** |
-| Ruby | 14 | 48 | 0 | 0 | 3 | **65** |
+| Ruby | 14 | 48 | 0 | 0 | 6 | **68** |
 | YAML | 24 | 21 | 3 | 0 | 1 | **49** |
 | C / C++ | 0 | 0 | 0 | 40 | 7 | **47** |
 | Generic (shell, PowerShell...) | 14 | 20 | 1 | 0 | 3 | **38** |
-| PHP | 0 | 22 | 0 | 0 | 5 | **27** |
+| PHP | 0 | 22 | 0 | 0 | 8 | **30** |
 | Solidity | 0 | 21 | 0 | 0 | 0 | **21** |
 | C# / .NET | 0 | 17 | 0 | 0 | 7 | **24** |
 | Scala | 0 | 12 | 0 | 0 | 0 | **12** |
@@ -23,10 +23,10 @@ Desglose de las **778 reglas** instaladas en `rules/semgrep/` (ver [`NOTICE.md`]
 | Clojure | 0 | 3 | 0 | 0 | 1 | **4** |
 | JSON | 0 | 3 | 0 | 0 | 1 | **4** |
 | Bash | 0 | 1 | 0 | 0 | 9 | **10** |
-| HTML | 0 | 1 | 0 | 0 | 1 | **2** |
-| OCaml | 0 | 1 | 0 | 0 | 3 | **4** |
+| HTML | 0 | 1 | 0 | 0 | 2 | **3** |
+| OCaml | 0 | 1 | 0 | 0 | 5 | **6** |
 | Dockerfile | 0 | 0 | 0 | 0 | 12 | **12** |
-| **TOTAL** | **112** | **556** | **6** | **40** | **84** | **798** |
+| **TOTAL** | **112** | **556** | **6** | **40** | **97** | **811** |
 
 ## Los 5 lenguajes con más cobertura
 

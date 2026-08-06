@@ -69,8 +69,14 @@ rules:
       - ocaml
     patterns:
       - pattern: let $VAR = "$SECRET_VALUE"
-      - pattern-regex: "(?i)(api_key|password|secret|token)"
-        selector: $VAR
+      - metavariable-regex:
+          metavariable: $VAR
+          regex: "(?i)(api_key|password|secret|token)"
+      - metavariable-regex:
+          metavariable: $SECRET_VALUE
+          regex: "(?!thisisnotasecret)"
+          # Adding a pattern-not-regex for the actual secret value to avoid false positives
+          # (e.g., exclude common non-secret strings if they are assigned to secret-looking variable names)
     metadata:
       severity_score: 75
       confidence_score: 60
@@ -88,10 +94,19 @@ rules:
     languages:
       - ocaml
     patterns:
-      - pattern: Sys.file_exists ($UNSANITIZED_INPUT)
-      - pattern: Unix.openfile ($UNSANITIZED_INPUT) $FLAGS $MODE
-      - pattern: Pervasives.open_in ($UNSANITIZED_INPUT)
-      - pattern: Pervasives.open_out ($UNSANITIZED_INPUT)
+      - pattern-either:
+          - patterns:
+              - pattern: open_in $FILENAME
+              - pattern-not: open_in (Filename.concat $ANY $_)
+          - patterns:
+              - pattern: open_out $FILENAME
+              - pattern-not: open_out (Filename.concat $ANY $_)
+          - patterns:
+              - pattern: Sys.file_exists $FILENAME
+              - pattern-not: Sys.file_exists (Filename.concat $ANY $_)
+          - patterns:
+              - pattern: Unix.openfile $FILENAME $FLAGS $MODE
+              - pattern-not: Unix.openfile (Filename.concat $ANY $_) $FLAGS $MODE
     metadata:
       severity_score: 75
       confidence_score: 60
@@ -109,9 +124,10 @@ rules:
     languages:
       - ocaml
     patterns:
-      - pattern: Printf.printf $FORMAT ($UNSANITIZED_INPUT)
-      - pattern: Printf.eprintf $FORMAT ($UNSANITIZED_INPUT)
-      - pattern: Format.fprintf $FORMAT ($UNSANITIZED_INPUT)
+      - pattern: $CALL_EXPR
+      - metavariable-regex:
+          metavariable: $CALL_EXPR.name
+          regex: ".*(printf|eprintf)"
     metadata:
       severity_score: 50
       confidence_score: 60
@@ -129,9 +145,10 @@ rules:
     languages:
       - ocaml
     patterns:
-      - pattern: Digest.string ($ANY)
-      - pattern: Md5.hash ($ANY)
-      - pattern: Sha1.hash ($ANY)
+      - pattern: $CALL_EXPR
+      - metavariable-regex:
+          metavariable: $CALL_EXPR.name
+          regex: ".*(string|hash)"
     metadata:
       severity_score: 50
       confidence_score: 100
