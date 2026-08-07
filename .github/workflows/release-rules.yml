@@ -1,0 +1,366 @@
+name: Release rules (SemVer + notify consumer)
+
+# Versiona conjuntamente las reglas Semgrep -- propias (rules/semgrep/custom/<lenguaje>/)
+# Y de terceros integradas (rules/semgrep/third-party/<vendor>/<carpeta>/) -- junto con
+# las reglas YARA ya puntuadas y publicadas (dist/yara_scored/<categoria>/): valida los
+# tres conjuntos, calcula un manifest.json con hash por clave, crea un tag + GitHub
+# Release, y notifica al repo consumidor privado via repository_dispatch (sin polling).
+#
+# Alcance deliberado (ver .claude/ImplementacionFlujoCICD.md):
+#   - Semgrep: custom/ Y third-party/. A diferencia del submodulo YARA en bruto,
+#     rules/semgrep/third-party/ no es upstream sin curar: son reglas ya elegidas
+#     e integradas, commiteadas en el repo y usadas directamente (ver README). Para
+#     varios lenguajes son ademas la mayoria del ruleset real (p.ej. Python: 10
+#     reglas propias frente a 144 de terceros), asi que quedaban fuera del
+#     versionado daba una vision incompleta. custom/ y third-party/ se mantienen
+#     como namespaces separados en el manifest (no se fusionan en una sola clave
+#     por lenguaje): third-party esta organizado por vendor/carpeta, con carpetas
+#     que no siempre son un lenguaje (generic, problem-based-packs, noisy) y con
+#     nombres que no coinciden con los de custom/ (trailofbits/rs vs custom/rust).
+#     Ver el docstring de scripts/build_release_manifest.py para el detalle.
+#   - YARA: SOLO dist/yara_scored/, el artefacto final ya publicado con la
+#     puntuacion de riesgo inyectada por scripts/generate_scored_yara.py. Nunca
+#     yara_scores_output/*.json ni el submodulo yara_rules/Yara-Rules-Repo: ese
+#     submodulo SI es el repo upstream completo y sin curar (aqui no hay
+#     equivalente a "ya integrado y listo para usar"), y solo el subconjunto
+#     elegido por yara_rule_scores.json llega a publicarse -- es entrada del
+#     pipeline, no lo que el consumidor descarga y ejecuta.
+#
+# --------------------------------------------------------------------------------
+# POR QUE DOS TRIGGERS (push Y workflow_run) EN LUGAR DE SOLO "push a main"
+# --------------------------------------------------------------------------------
+# El pipeline YARA es de dos fases:
+#   1) Un humano empuja un cambio a yara_scores_output/yara_rule_scores.json (o al
+#      submodulo, o al script generador).
+#   2) El workflow "Publish scored YARA rules" (publish-scored-yara.yml) se dispara
+#      por ese push, regenera dist/yara_scored/ y lo commitea con el mensaje
+#      "chore: regenerate scored YARA ruleset [skip ci]".
+#
+# GitHub Actions NO dispara NINGUN workflow via evento push/pull_request para un
+# commit cuyo mensaje contiene "[skip ci]" (comportamiento global de la
+# plataforma). Si este workflow solo escuchara "push a main", nunca veria el
+# commit que realmente actualiza dist/yara_scored/ -- justo el que necesitamos
+# para calcular el hash de YARA.
+#
+# Por eso hay dos disparadores complementarios:
+#   a) `push` a main, filtrado a rutas que SOLO afectan a Semgrep (custom/) o a un
+#      dist/yara_scored editado a mano fuera del flujo normal. Cubre cambios que
+#      NO disparan publish-scored-yara.yml.
+#   b) `workflow_run` cuando "Publish scored YARA rules" TERMINA con exito. Cubre
+#      el caso en el que si hubo regeneracion, leyendo main YA con el commit del
+#      bot aplicado.
+#
+# CASO MIXTO: un mismo push que toca a la vez rules/semgrep/custom/** y algo que
+# tambien dispara publish-scored-yara.yml (p.ej. yara_scores_output/yara_rule_scores.json).
+# El trigger (a) se dispara de inmediato, pero en ese momento dist/yara_scored/
+# todavia NO se ha regenerado -> el hash de YARA seria el viejo. El primer paso
+# del job ("decide") detecta esta situacion y se autocancela, delegando la
+# creacion del release al trigger (b), que llega despues con dist/yara_scored/
+# ya actualizado.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "rules/semgrep/custom/**"
+      - "rules/semgrep/third-party/**"
+      - "dist/yara_scored/**"
+  workflow_run:
+    workflows: ["Publish scored YARA rules"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch: {} # permite relanzar manualmente (pruebas / recuperacion tras fallo)
+
+permissions:
+  contents: write # crear el tag y la GitHub Release
+
+concurrency:
+  # Un unico carril para todo el repo: si el trigger (a) y el (b) llegasen a
+  # coincidir en el tiempo, se ejecutan en cola (no se cancelan) para no
+  # corromper el tageado/versionado con dos jobs tocando git tag a la vez.
+  group: release-rules-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    # Mismo motivo que publish-scored-yara.yml: dist/yara_scored/ incluye firmas
+    # THOR de webshells reales como cadenas de deteccion, que Windows Defender
+    # trata como amenaza real y puede poner en cuarentena. No usar Windows aqui.
+    if: >
+      github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+    steps:
+      # ------------------------------------------------------------------
+      # 0. Resolver que commit/ref hay que comprobar
+      # ------------------------------------------------------------------
+      - name: Resolve ref to check out
+        id: ref
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "ref=${{ github.sha }}" >> "$GITHUB_OUTPUT"
+          else
+            # workflow_run / workflow_dispatch: queremos la punta actual de
+            # main, que para workflow_run ya incluye el commit del bot con
+            # dist/yara_scored/ regenerado.
+            echo "ref=main" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout (historial completo + tags, necesario para git describe y git diff)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.ref.outputs.ref }}
+          fetch-depth: 0
+          submodules: false # solo leemos dist/yara_scored/, ya publicado; no hace falta el submodulo YARA en bruto
+
+      # ------------------------------------------------------------------
+      # 1. Guard anti-carrera (ver comentario largo al principio del fichero)
+      # ------------------------------------------------------------------
+      - name: Decide whether this run should produce a release
+        id: decide
+        run: |
+          if [ "${{ github.event_name }}" != "push" ]; then
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          BEFORE="${{ github.event.before }}"
+          AFTER="${{ github.sha }}"
+          ZERO_SHA="0000000000000000000000000000000000000000"
+
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = "$ZERO_SHA" ]; then
+            echo "No hay commit 'before' valido (push inicial o force-push); no se puede comprobar colision, se continua."
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+          elif git diff --name-only "$BEFORE" "$AFTER" \
+              | grep -qE '^(yara_scores_output/yara_rule_scores\.json|yara_rules/|scripts/generate_scored_yara\.py)'; then
+            echo "::notice::Este push tambien dispara 'Publish scored YARA rules'; se delega la creacion del release al trigger workflow_run posterior (cuando dist/yara_scored/ ya este regenerado)."
+            echo "proceed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ------------------------------------------------------------------
+      # 2. VALIDACION -- si falla cualquiera de los dos, el job se detiene
+      #    aqui (no se llega a tag/release/dispatch).
+      # ------------------------------------------------------------------
+      - name: Set up Python
+        if: steps.decide.outputs.proceed == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install validators (semgrep, yara-python)
+        if: steps.decide.outputs.proceed == 'true'
+        run: pip install semgrep yara-python
+
+      - name: Validate Semgrep rules (rules/semgrep/, custom + third-party)
+        if: steps.decide.outputs.proceed == 'true'
+        run: semgrep --validate --config rules/semgrep/
+
+      - name: Validate YARA rule syntax (dist/yara_scored/)
+        if: steps.decide.outputs.proceed == 'true'
+        run: python scripts/validate_yara_syntax.py
+
+      # ------------------------------------------------------------------
+      # 3. DETECCION DE CAMBIOS + MANIFEST -- comparamos contra el ULTIMO
+      #    TAG (no contra el commit padre inmediato). Con el pipeline YARA
+      #    de dos fases, "el commit anterior" puede ser el commit del bot
+      #    (que solo trae dist/yara_scored/) o el commit humano original
+      #    (que trae el resto): ninguno de los dos por si solo refleja
+      #    "todo lo que cambio desde la ultima version publicada", que es
+      #    lo que un manifest de release necesita. Diff contra el ultimo
+      #    tag es ademas la definicion natural de "que hay de nuevo en esta
+      #    version".
+      # ------------------------------------------------------------------
+      - name: Resolve last release tag
+        if: steps.decide.outputs.proceed == 'true'
+        id: base
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 --match 'v[0-9]*.[0-9]*.[0-9]*' 2>/dev/null || echo "")
+          if [ -z "$LAST_TAG" ]; then
+            echo "No existe ningun tag previo; se trata como primera release (todo cuenta como cambiado)."
+            echo "base_ref=" >> "$GITHUB_OUTPUT"
+            echo "last_tag=v0.0.0" >> "$GITHUB_OUTPUT"
+          else
+            echo "Ultimo tag encontrado: $LAST_TAG"
+            echo "base_ref=$LAST_TAG" >> "$GITHUB_OUTPUT"
+            echo "last_tag=$LAST_TAG" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Read triggering commit message (para la etiqueta [major]/[minor]/[patch])
+        if: steps.decide.outputs.proceed == 'true'
+        id: msg
+        run: |
+          # Para workflow_run necesitamos el mensaje del commit que disparo
+          # "Publish scored YARA rules" (el commit humano con la etiqueta de
+          # version), NO el commit del bot que quedo en HEAD tras el checkout
+          # (ese siempre dice "chore: regenerate ... [skip ci]"). Le pasamos a
+          # `git log` un SHA -- un valor opaco de 40 hex, no texto libre -- en
+          # vez de interpolar el propio mensaje del commit dentro del script
+          # con ${{ }}, precisamente para no abrir una via de inyeccion de
+          # comandos a traves de un mensaje de commit manipulado.
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            TARGET_SHA="${{ github.event.workflow_run.head_sha }}"
+          else
+            TARGET_SHA="${{ github.sha }}"
+          fi
+          {
+            echo "message<<COMMITMSG_EOF"
+            git log -1 --pretty=%B "$TARGET_SHA"
+            echo "COMMITMSG_EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Determine SemVer bump and compute new version
+        if: steps.decide.outputs.proceed == 'true'
+        id: version
+        env:
+          COMMIT_MSG: ${{ steps.msg.outputs.message }}
+          LAST_TAG: ${{ steps.base.outputs.last_tag }}
+        run: |
+          # Prioridad de etiquetas manuales en el mensaje del commit/PR:
+          # [major] > [minor] > [patch]. La etiqueta manual es la UNICA
+          # fuente de verdad para el bump (nada de Conventional Commits ni
+          # inferencia por diff de contenido). Sin etiqueta -> [patch] por
+          # defecto, dejando constancia explicita de que fue automatico.
+          if echo "$COMMIT_MSG" | grep -qi '\[major\]'; then
+            BUMP=major
+          elif echo "$COMMIT_MSG" | grep -qi '\[minor\]'; then
+            BUMP=minor
+          elif echo "$COMMIT_MSG" | grep -qi '\[patch\]'; then
+            BUMP=patch
+          else
+            echo "No se encontro etiqueta de version ([major]/[minor]/[patch]) en el mensaje del commit; aplicando PATCH por defecto."
+            BUMP=patch
+          fi
+
+          VERSION_NUM="${LAST_TAG#v}"
+          MAJOR=$(echo "$VERSION_NUM" | cut -d. -f1)
+          MINOR=$(echo "$VERSION_NUM" | cut -d. -f2)
+          PATCH=$(echo "$VERSION_NUM" | cut -d. -f3)
+
+          case "$BUMP" in
+            major) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
+            minor) MINOR=$((MINOR + 1)); PATCH=0 ;;
+            patch) PATCH=$((PATCH + 1)) ;;
+          esac
+
+          NEW_VERSION="v${MAJOR}.${MINOR}.${PATCH}"
+          echo "Version anterior: $LAST_TAG -> Nueva version ($BUMP): $NEW_VERSION"
+
+          if git rev-parse "$NEW_VERSION" >/dev/null 2>&1; then
+            echo "::error::El tag $NEW_VERSION ya existe. Se aborta para no sobrescribir una release existente (¿re-ejecucion? ¿colision de version?); revisa manualmente."
+            exit 1
+          fi
+
+          echo "bump=$BUMP" >> "$GITHUB_OUTPUT"
+          echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Build manifest.json (hash por clave, rule_count, listas de cambios)
+        if: steps.decide.outputs.proceed == 'true'
+        run: |
+          python scripts/build_release_manifest.py \
+            --version "${{ steps.version.outputs.new_version }}" \
+            --base-ref "${{ steps.base.outputs.base_ref }}" \
+            --out manifest.json
+          cat manifest.json
+
+      # ------------------------------------------------------------------
+      # 4. CREAR TAG Y RELEASE
+      # ------------------------------------------------------------------
+      - name: Create and push git tag
+        if: steps.decide.outputs.proceed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "${{ steps.version.outputs.new_version }}" \
+            -m "Release ${{ steps.version.outputs.new_version }} (bump: ${{ steps.version.outputs.bump }})"
+          git push origin "${{ steps.version.outputs.new_version }}"
+
+      - name: Create GitHub Release
+        if: steps.decide.outputs.proceed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.new_version }}
+          BUMP: ${{ steps.version.outputs.bump }}
+        run: |
+          LANGS=$(jq -r '.languages_changed | if length == 0 then "(ninguno)" else join(", ") end' manifest.json)
+          THIRD_PARTY=$(jq -r '.third_party_changed | if length == 0 then "(ninguno)" else join(", ") end' manifest.json)
+          CATS=$(jq -r '.yara_categories_changed | if length == 0 then "(ninguna)" else join(", ") end' manifest.json)
+          SEMGREP_CUSTOM_TOTAL=$(jq -r '.rule_count.semgrep.custom' manifest.json)
+          SEMGREP_THIRD_PARTY_TOTAL=$(jq -r '.rule_count.semgrep.third_party' manifest.json)
+          YARA_TOTAL=$(jq -r '.rule_count.yara' manifest.json)
+
+          NOTES_FILE=$(mktemp)
+          cat > "$NOTES_FILE" <<EOF
+          ## Cambios en esta version (bump: $BUMP)
+
+          - **Lenguajes Semgrep propios modificados (custom/):** $LANGS
+          - **Reglas de terceros modificadas (third-party/<vendor>/<carpeta>):** $THIRD_PARTY
+          - **Categorias YARA modificadas:** $CATS
+          - **Total reglas Semgrep propias (rules/semgrep/custom/):** $SEMGREP_CUSTOM_TOTAL
+          - **Total reglas Semgrep de terceros (rules/semgrep/third-party/):** $SEMGREP_THIRD_PARTY_TOTAL
+          - **Total reglas YARA publicadas (dist/yara_scored/):** $YARA_TOTAL
+
+          El fichero \`manifest.json\` adjunto incluye un hash sha256 por clave (lenguaje,
+          vendor/carpeta o categoria YARA) para verificar la integridad de una descarga
+          parcial (sparse-checkout). Metodo de hash documentado en
+          \`scripts/build_release_manifest.py\`.
+          EOF
+
+          gh release create "$VERSION" manifest.json \
+            --title "$VERSION" \
+            --notes-file "$NOTES_FILE" \
+            --target "$(git rev-parse HEAD)"
+
+      # ------------------------------------------------------------------
+      # 5. NOTIFICAR AL REPO CONSUMIDOR (repository_dispatch, sin polling)
+      # ------------------------------------------------------------------
+      - name: Notify consumer repo (repository_dispatch)
+        if: steps.decide.outputs.proceed == 'true'
+        env:
+          # El token se referencia SOLO via env: (nunca interpolado con ${{ }}
+          # dentro del script) para que GitHub lo enmascare de forma fiable en
+          # los logs. No se usa `set -x` en este step por el mismo motivo.
+          DISPATCH_TOKEN: ${{ secrets.DISPATCH_TOKEN }}
+        run: |
+          CONSUMER_OWNER="pablojimz"
+          CONSUMER_REPO="watch_gate"
+
+          DISPATCH_BODY=$(jq -n \
+            --arg et "rules-updated" \
+            --slurpfile m manifest.json \
+            '{
+              event_type: $et,
+              client_payload: {
+                version: $m[0].version,
+                hashes: $m[0].hashes,
+                languages_changed: $m[0].languages_changed,
+                third_party_changed: $m[0].third_party_changed,
+                yara_categories_changed: $m[0].yara_categories_changed
+              }
+            }')
+
+          HTTP_STATUS=$(curl --fail-with-body -sS -o /tmp/dispatch_response.json -w "%{http_code}" \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $DISPATCH_TOKEN" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${CONSUMER_OWNER}/${CONSUMER_REPO}/dispatches" \
+            -d "$DISPATCH_BODY") || {
+              echo "::error::Fallo la notificacion al repo consumidor (repository_dispatch)."
+              exit 1
+            }
+
+          echo "repository_dispatch respondio HTTP $HTTP_STATUS"
+
+      - name: Summary
+        if: steps.decide.outputs.proceed == 'true'
+        run: |
+          {
+            echo "### Release ${{ steps.version.outputs.new_version }} publicada"
+            echo ""
+            echo '```json'
+            cat manifest.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
