@@ -1,3 +1,4 @@
 .venv/
 rules/semgrep/.env
 .env
+__pycache__/
