@@ -18,6 +18,21 @@ name: Release rules (SemVer + notify consumer)
 #     que no siempre son un lenguaje (generic, problem-based-packs, noisy) y con
 #     nombres que no coinciden con los de custom/ (trailofbits/rs vs custom/rust).
 #     Ver el docstring de scripts/build_release_manifest.py para el detalle.
+#
+#     NOTA sobre el paso de validacion: `semgrep --validate` se apunta a
+#     rules/semgrep/custom/ y rules/semgrep/third-party/ por SEPARADO
+#     (dos --config), nunca a rules/semgrep/ entero -- esa carpeta tambien
+#     tiene rules/semgrep/config.yaml (config de LiteLLM, no reglas), que
+#     semgrep intentaria cargar igual como fichero de reglas y fallaria al
+#     no tener una clave `rules:`. Ademas, semgrep (confirmado en 1.130.0
+#     y 1.172.0, la ultima disponible) CRASHEA con cualquier valor YAML de
+#     tipo float en la metadata de una regla (bug en rule_lang.py, metodo
+#     unroll(), que no reconoce el tipo ScalarFloat de su propio parser).
+#     30 ficheros de third-party/ (0xdea, opengrep, trailofbits) tenian un
+#     `severity_score` con decimales (87.5/62.5/37.5); se les puso el
+#     valor entre comillas (queda como texto, mismo numero, cero cambio de
+#     puntuacion) precisamente para evitar ese crash sin alterar ningun
+#     criterio de riesgo real.
 #   - YARA: SOLO dist/yara_scored/, el artefacto final ya publicado con la
 #     puntuacion de riesgo inyectada por scripts/generate_scored_yara.py. Nunca
 #     yara_scores_output/*.json ni el submodulo yara_rules/Yara-Rules-Repo: ese
@@ -154,9 +169,14 @@ jobs:
         if: steps.decide.outputs.proceed == 'true'
         run: pip install semgrep yara-python
 
-      - name: Validate Semgrep rules (rules/semgrep/, custom + third-party)
+      - name: Validate Semgrep rules (custom + third-party)
         if: steps.decide.outputs.proceed == 'true'
-        run: semgrep --validate --config rules/semgrep/
+        # Apuntamos a custom/ y third-party/ explicitamente, NO a
+        # rules/semgrep/ entero: esa carpeta tambien contiene
+        # rules/semgrep/config.yaml (config de LiteLLM, nada que ver con
+        # reglas Semgrep), y semgrep intenta cargarlo igualmente como
+        # fichero de reglas si se le pasa la carpeta raiz completa.
+        run: semgrep --validate --config rules/semgrep/custom/ --config rules/semgrep/third-party/
 
       - name: Validate YARA rule syntax (dist/yara_scored/)
         if: steps.decide.outputs.proceed == 'true'
