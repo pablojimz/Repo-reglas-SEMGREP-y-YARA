@@ -198,8 +198,9 @@ jobs:
           # (ese siempre dice "chore: regenerate ... [skip ci]"). Le pasamos a
           # `git log` un SHA -- un valor opaco de 40 hex, no texto libre -- en
           # vez de interpolar el propio mensaje del commit dentro del script
-          # con ${{ }}, precisamente para no abrir una via de inyeccion de
-          # comandos a traves de un mensaje de commit manipulado.
+          # con una expresion de contexto de GitHub Actions, precisamente
+          # para no abrir una via de inyeccion de comandos a traves de un
+          # mensaje de commit manipulado.
           if [ "${{ github.event_name }}" = "workflow_run" ]; then
             TARGET_SHA="${{ github.event.workflow_run.head_sha }}"
           else
@@ -319,9 +320,10 @@ jobs:
       - name: Notify consumer repo (repository_dispatch)
         if: steps.decide.outputs.proceed == 'true'
         env:
-          # El token se referencia SOLO via env: (nunca interpolado con ${{ }}
-          # dentro del script) para que GitHub lo enmascare de forma fiable en
-          # los logs. No se usa `set -x` en este step por el mismo motivo.
+          # El token se referencia SOLO a traves de env: (nunca interpolado
+          # con una expresion de contexto directamente dentro del script)
+          # para que GitHub lo enmascare de forma fiable en los logs. No se
+          # usa `set -x` en este step por el mismo motivo.
           DISPATCH_TOKEN: ${{ secrets.DISPATCH_TOKEN }}
         run: |
           CONSUMER_OWNER="pablojimz"
