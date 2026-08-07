@@ -38,6 +38,18 @@ def strip_comments(text):
     i, n = 0, len(text)
     in_string = False
     escape = False
+    # Ultimo caracter no-blanco ya escrito en `out`. Se usa para decidir si
+    # un '/' abre un literal de regex de YARA (ej. `$re = /foo\/bar/`) en
+    # vez de tratarlo como texto normal: en la gramatica de YARA, un
+    # literal de regex solo puede empezar justo despues de un '=' (la
+    # forma con diferencia mas comun, `$id = /regex/flags`). Sin este
+    # chequeo, un regex que contenga una secuencia `\/` seguida del '/' de
+    # cierre (o cualquier `//`/`/*` interna) se confunde con un comentario
+    # y strip_comments() se come el resto de la linea, dejando el regex
+    # sin cerrar -- bug real detectado en webshells/WShell_Drupalgeddon2_icos.yar
+    # (la regex terminaba en `...\*\//`, y el '//' final se interpretaba
+    # como inicio de comentario de linea).
+    last_non_space = ''
     while i < n:
         c = text[i]
         if in_string:
@@ -53,6 +65,7 @@ def strip_comments(text):
         if c == '"':
             in_string = True
             out.append(c)
+            last_non_space = c
             i += 1
             continue
         if c == '/' and i + 1 < n and text[i+1] == '/':
@@ -68,9 +81,54 @@ def strip_comments(text):
                 break
             i = j + 2
             continue
+        if c == '/' and last_non_space == '=':
+            # Literal de regex: consumir tal cual (respetando '\' como
+            # escape, igual que en las cadenas) hasta el '/' de cierre sin
+            # escapar, sin tratar ningun '//' ni '/*' interno como
+            # comentario.
+            out.append(c)
+            j = i + 1
+            re_escape = False
+            while j < n:
+                rc = text[j]
+                out.append(rc)
+                if re_escape:
+                    re_escape = False
+                elif rc == '\\':
+                    re_escape = True
+                elif rc == '/':
+                    j += 1
+                    break
+                j += 1
+            i = j
+            last_non_space = '/'
+            continue
         out.append(c)
+        if not c.isspace():
+            last_non_space = c
         i += 1
     return ''.join(out)
+
+
+IMPORT_RE = re.compile(r'(?m)^[ \t]*import\s+"([^"]+)"\s*$')
+
+def extract_imports(clean_text):
+    """
+    Modulos declarados con `import "modulo"` en el fichero fuente (p.ej.
+    `import "pe"`). split_rules() solo extrae bloques `rule { ... }`, asi
+    que estas declaraciones se perdian por completo en el fichero
+    regenerado -- bug real detectado en antidebug_antivm.yar, que usa
+    `pe.imports(...)` en una condition sin que el fichero de salida
+    tuviera el `import "pe"` correspondiente. Se devuelven todos los
+    imports del fichero fuente (no solo los de las reglas seleccionadas):
+    un import de mas es inocuo en YARA, perder uno necesario no compila.
+    """
+    seen = []
+    for m in IMPORT_RE.finditer(clean_text):
+        name = m.group(1)
+        if name not in seen:
+            seen.append(name)
+    return seen
 
 RULE_HEADER_RE = re.compile(
     r'(?m)^[ \t]*((?:private\s+|global\s+)*rule)\s+([A-Za-z0-9_]+)\s*(:\s*([^\n{]*))?\s*\{'
@@ -128,6 +186,7 @@ def main():
         text = git_show(rel_file)
         clean = strip_comments(text)
         rules = split_rules(clean)
+        imports = extract_imports(clean)
 
         private_rules = [r for r in rules if r["private"]]
         scored_out = []
@@ -158,6 +217,10 @@ def main():
 
         with open(out_path, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(header)
+            for imp in imports:
+                fh.write(f'import "{imp}"\n')
+            if imports:
+                fh.write("\n")
             for pr in private_rules:
                 fh.write("// -- structural dependency, not individually scored --\n")
                 fh.write(pr["raw"])
