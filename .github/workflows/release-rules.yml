@@ -128,6 +128,15 @@ jobs:
           ref: ${{ steps.ref.outputs.ref }}
           fetch-depth: 0
           submodules: false # solo leemos dist/yara_scored/, ya publicado; no hace falta el submodulo YARA en bruto
+          # rules/semgrep/**/*.yaml esta gestionado con Git LFS (ver
+          # .gitattributes). actions/checkout NO descarga el contenido
+          # real de los objetos LFS por defecto -- sin este flag, cada
+          # fichero de reglas quedaria como el "puntero" LFS de 3 lineas
+          # (version/oid/size), no el YAML real. Eso rompe tanto
+          # `semgrep --validate` (el puntero no es un mapping YAML valido)
+          # como el hash/rule_count de build_release_manifest.py, que
+          # leeria el puntero en vez del contenido real de la regla.
+          lfs: true
 
       # ------------------------------------------------------------------
       # 1. Guard anti-carrera (ver comentario largo al principio del fichero)
