@@ -58,5 +58,50 @@ E=80 (SE USA SIEMPRE, SIN CONDICIÓN)
 riesgo=72
 justificación: "CANDADO MALO PERO SE USA SIEMPRE EN LOGIN NORMAL."
 
+CAMPO NUEVO: finding_type (NO CAMBIA S/C/E/riesgo. SE PONE APARTE, DESPUÉS DE risk_justification. NO BORRAR NADA DE ARRIBA.)
+
+finding_type DECIR QUÉ TIPO DE COSA ES CÓDIGO QUE REGLA ENCONTRÓ. SOLO DOS VALORES POSIBLE:
+
+malicious → CÓDIGO YA SER (O CASI SEGURO SER) MALWARE, IMPLANTE, PUERTA TRASERA, DROPPER, O TÉCNICA QUE SOLO SIRVE PARA ATACAR (NADIE USA ESO PARA COSA BUENA). RESPUESTA ESPERADA: AISLAR YA, NO ESPERAR.
+
+vulnerability → CÓDIGO SER NORMAL, LEGÍTIMO, PERO TENER AGUJERO QUE SE PUEDE EXPLOTAR (INYECCIÓN SQL, PATH TRAVERSAL, CANDADO CRIPTO MALO, SECRETO EN DURO, ETC). RESPUESTA ESPERADA: ARREGLAR CON CICLO NORMAL, NO PÁNICO.
+
+TÚ ESCOGER SOLO UNO DE LOS DOS. TÚ NO INVENTAR TERCER VALOR (NO "ambiguous", NO "unknown", NO NINGÚN OTRO NOMBRE).
+
+SI TÚ TENER DUDA RAZONABLE (CÓDIGO PODER SER LAS DOS COSAS SEGÚN CONTEXTO, O TÉCNICA SER DUAL-USE: SIRVE PARA ATAQUE Y TAMBIÉN PARA COSA LEGÍTIMA COMO DRM/ANTI-CHEAT/LICENCIA):
+TÚ IGUAL PONER finding_type CON TU MEJOR SUPOSICIÓN (NO DEJAR VACÍO, NO FORZAR A CIEGAS TAMPOCO).
+TÚ AÑADIR ADEMÁS:
+  needs_review: true
+  needs_review_reason: "<POCAS PALABRAS. POR QUÉ TÚ TENER DUDA>"
+ESO MANDA A HUMANO REVISAR DESPUÉS. SI TÚ NO TENER DUDA, TÚ NO PONER needs_review NI needs_review_reason (SOLO SE PONE CUANDO HAY DUDA DE VERDAD).
+
+FORMATO SEGÚN TIPO DE REGLA:
+
+YARA (dentro de meta:, sintaxis YARA con =):
+	finding_type = "malicious"
+	needs_review = true
+	needs_review_reason = "<motivo>"
+
+Semgrep (dentro de metadata:, sintaxis YAML con :):
+  finding_type: vulnerability
+  needs_review: true
+  needs_review_reason: "<motivo>"
+
+EJEMPLO 1 (malicious, sin duda):
+REGLA DETECTA FIRMA DE WEBSHELL YA SUBIDO (eval($_POST[...]) DENTRO DE ARCHIVO QUE ES EN SÍ MISMO EL BACKDOOR, O PATRÓN DE SHELL REVERSA LITERAL TIPO `sh -i >& /dev/tcp/...`):
+finding_type: malicious
+(SIN needs_review: EL PROPIO CÓDIGO ENCONTRADO ES EL ATAQUE, NO HAY DUDA RAZONABLE)
+
+EJEMPLO 2 (vulnerability, sin duda):
+REGLA DETECTA eval($CODIGO) DONDE $CODIGO NO ES LITERAL, DENTRO DE APLICACIÓN NORMAL (BUSCA FALLO DE DISEÑO, NO PAYLOAD YA PUESTO):
+finding_type: vulnerability
+(SIN needs_review: ES UN FALLO EXPLOTABLE EN CÓDIGO LEGÍTIMO, NO MALWARE YA DESPLEGADO)
+
+EJEMPLO 3 (malicious CON duda, caso real antidebug_antivm):
+REGLA DETECTA TÉCNICA ANTI-DEBUG/ANTI-VM (IsDebugged, NtGlobalFlags, CheckRemoteDebuggerPresent...). ESTA TÉCNICA APARECE MUCHO EN MALWARE (EVADIR ANÁLISIS) PERO TAMBIÉN EXISTE EN SOFTWARE LEGÍTIMO (DRM, ANTI-CHEAT, PROTECCIÓN DE LICENCIA):
+finding_type: malicious
+needs_review: true
+needs_review_reason: "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
+
 AHORA TÚ PROCESAR REGLAS SIGUIENTES:
 
