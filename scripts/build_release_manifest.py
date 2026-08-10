@@ -77,6 +77,21 @@ Uso:
     yara_categories_changed (git diff --base-ref..HEAD). Si se omite o esta
     vacio, se compara contra el arbol vacio de git (equivale a "todo es
     nuevo": primera release).
+
+--------------------------------------------------------------------------
+finding_type_summary / finding_type_notes:
+--------------------------------------------------------------------------
+Ademas de hashes y rule_count, el manifest incluye, con el mismo anidado
+por clave (lenguaje bajo semgrep.custom, vendor/carpeta bajo
+semgrep.third_party, categoria bajo yara), un desglose de cuantas reglas
+puntuadas de esa clave son finding_type malicious vs vulnerability, cuantas
+llevan needs_review: true, y cuantas reglas puntuadas todavia no tienen
+finding_type ("unclassified" -- deberia ser 0; ver
+.claude/criterioPuntuacionReglas.md para el esquema de clasificacion).
+finding_type_notes es una frase generada a partir de los totales globales,
+pensada para ir directamente en las notas de la release / el payload de
+repository_dispatch sin que el consumidor tenga que sumar los conteos el
+mismo.
 """
 import argparse
 import datetime
@@ -86,6 +101,7 @@ import pathlib
 import re
 import subprocess
 import sys
+from collections import Counter
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 SEMGREP_CUSTOM_ROOT = REPO_ROOT / "rules" / "semgrep" / "custom"
@@ -99,6 +115,18 @@ SEMGREP_RULE_PATTERN = re.compile(r"^\s*-\s*id:\s*\S", re.MULTILINE)
 # estructural por generate_scored_yara.py) empieza por "rule <nombre>" o
 # "private rule <nombre>".
 YARA_RULE_PATTERN = re.compile(r"^\s*(private\s+)?rule\s+\w+", re.MULTILINE)
+
+# finding_type (malicious|vulnerability) + needs_review: clasificacion
+# anadida por scripts/classify_semgrep_finding_type.py (metadata: de cada
+# regla Semgrep, sintaxis YAML) y scripts/backfill_finding_type_yara.py +
+# generate_scored_yara.py (meta: de cada regla YARA, sintaxis "clave =
+# valor"). Ver .claude/criterioPuntuacionReglas.md para el esquema.
+SEMGREP_RISK_SCORE_PATTERN = re.compile(r"^\s*risk_score\s*:", re.MULTILINE)
+SEMGREP_FINDING_TYPE_PATTERN = re.compile(r"^\s*finding_type\s*:\s*(malicious|vulnerability)\s*$", re.MULTILINE)
+SEMGREP_NEEDS_REVIEW_PATTERN = re.compile(r"^\s*needs_review\s*:\s*true\s*$", re.MULTILINE)
+YARA_RISK_SCORE_PATTERN = re.compile(r"^\s*risk_score\s*=", re.MULTILINE)
+YARA_FINDING_TYPE_PATTERN = re.compile(r'^\s*finding_type\s*=\s*"(malicious|vulnerability)"\s*$', re.MULTILINE)
+YARA_NEEDS_REVIEW_PATTERN = re.compile(r"^\s*needs_review\s*=\s*true\s*$", re.MULTILINE)
 
 
 def run_git(args):
@@ -134,6 +162,98 @@ def count_rules(root: pathlib.Path, extensions, pattern) -> int:
         for f in root.rglob(f"*{ext}"):
             total += len(pattern.findall(f.read_text(encoding="utf-8", errors="replace")))
     return total
+
+
+def count_finding_types(root: pathlib.Path, extensions, risk_score_pattern,
+                         finding_type_pattern, needs_review_pattern) -> dict:
+    """
+    Para los ficheros de regla directamente bajo `root` (recursivo): cuantas
+    reglas puntuadas (risk_score presente) son finding_type malicious vs
+    vulnerability, cuantas de esas llevan needs_review: true, y cuantas
+    reglas puntuadas todavia no tienen finding_type ("unclassified" --
+    deberia quedarse en 0 para todo lo que ya paso por
+    scripts/classify_semgrep_finding_type.py o
+    scripts/backfill_finding_type_yara.py; un valor distinto de cero es la
+    senal de que se anadieron reglas nuevas sin clasificar).
+    """
+    scored_total = 0
+    values = []
+    needs_review = 0
+    for ext in extensions:
+        for f in root.rglob(f"*{ext}"):
+            text = f.read_text(encoding="utf-8", errors="replace")
+            scored_total += len(risk_score_pattern.findall(text))
+            values.extend(finding_type_pattern.findall(text))
+            needs_review += len(needs_review_pattern.findall(text))
+    counts = Counter(values)
+    return {
+        "malicious": counts.get("malicious", 0),
+        "vulnerability": counts.get("vulnerability", 0),
+        "needs_review": needs_review,
+        "unclassified": scored_total - len(values),
+    }
+
+
+def finding_types_by_subdir(root: pathlib.Path, extensions, risk_score_pattern,
+                             finding_type_pattern, needs_review_pattern) -> dict:
+    return {
+        name: count_finding_types(root / name, extensions, risk_score_pattern,
+                                   finding_type_pattern, needs_review_pattern)
+        for name in list_subdirs(root)
+    }
+
+
+def finding_types_two_level(root: pathlib.Path, extensions, risk_score_pattern,
+                             finding_type_pattern, needs_review_pattern) -> dict:
+    """Mismo criterio de agrupacion vendor/carpeta que hash_two_level()."""
+    result = {}
+    for vendor in list_subdirs(root):
+        vendor_counts = {
+            folder: count_finding_types(root / vendor / folder, extensions, risk_score_pattern,
+                                         finding_type_pattern, needs_review_pattern)
+            for folder in list_subdirs(root / vendor)
+        }
+        if vendor_counts:
+            result[vendor] = vendor_counts
+    return result
+
+
+def _iter_leaf_finding_type_counts(node):
+    """Recorre finding_type_summary (mismo anidado que hashes/rule_count) y
+    devuelve cada dict hoja {malicious, vulnerability, needs_review, unclassified}."""
+    if isinstance(node, dict) and "malicious" in node and "vulnerability" in node:
+        yield node
+        return
+    if isinstance(node, dict):
+        for v in node.values():
+            yield from _iter_leaf_finding_type_counts(v)
+
+
+def total_finding_types(finding_type_summary: dict) -> dict:
+    totals = {"malicious": 0, "vulnerability": 0, "needs_review": 0, "unclassified": 0}
+    for leaf in _iter_leaf_finding_type_counts(finding_type_summary):
+        for key in totals:
+            totals[key] += leaf[key]
+    return totals
+
+
+def build_finding_type_notes(totals: dict) -> str:
+    scored = totals["malicious"] + totals["vulnerability"]
+    notes = (
+        f"De {scored} regla(s) puntuada(s) y clasificada(s): {totals['malicious']} "
+        f"apuntan a codigo ya malicioso (webshells, backdoors, tecnicas sin uso "
+        f"legitimo razonable -- respuesta esperada: contencion/aislamiento), "
+        f"{totals['vulnerability']} a vulnerabilidades explotables en codigo "
+        f"legitimo (respuesta esperada: ciclo normal de remediacion); "
+        f"{totals['needs_review']} de ellas estan marcadas needs_review para "
+        f"confirmacion humana."
+    )
+    if totals["unclassified"]:
+        notes += (
+            f" Aviso: {totals['unclassified']} regla(s) puntuada(s) todavia no "
+            f"tienen finding_type asignado."
+        )
+    return notes
 
 
 def hash_two_level(root: pathlib.Path) -> dict:
@@ -215,6 +335,21 @@ def main():
     third_party_hashes = hash_two_level(SEMGREP_THIRD_PARTY_ROOT)
     yara_hashes = {cat: hash_directory(YARA_ROOT / cat) for cat in list_subdirs(YARA_ROOT)}
 
+    finding_type_summary = {
+        "semgrep": {
+            "custom": finding_types_by_subdir(
+                SEMGREP_CUSTOM_ROOT, (".yml", ".yaml"), SEMGREP_RISK_SCORE_PATTERN,
+                SEMGREP_FINDING_TYPE_PATTERN, SEMGREP_NEEDS_REVIEW_PATTERN),
+            "third_party": finding_types_two_level(
+                SEMGREP_THIRD_PARTY_ROOT, (".yml", ".yaml"), SEMGREP_RISK_SCORE_PATTERN,
+                SEMGREP_FINDING_TYPE_PATTERN, SEMGREP_NEEDS_REVIEW_PATTERN),
+        },
+        "yara": finding_types_by_subdir(
+            YARA_ROOT, (".yar", ".yara"), YARA_RISK_SCORE_PATTERN,
+            YARA_FINDING_TYPE_PATTERN, YARA_NEEDS_REVIEW_PATTERN),
+    }
+    finding_type_notes = build_finding_type_notes(total_finding_types(finding_type_summary))
+
     manifest = {
         "version": args.version,
         "generated_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -235,6 +370,8 @@ def main():
             },
             "yara": count_rules(YARA_ROOT, (".yar", ".yara"), YARA_RULE_PATTERN),
         },
+        "finding_type_summary": finding_type_summary,
+        "finding_type_notes": finding_type_notes,
     }
 
     out_path = pathlib.Path(args.out)
@@ -245,6 +382,7 @@ def main():
     print(f"  third_party_changed: {manifest['third_party_changed']}")
     print(f"  yara_categories_changed: {manifest['yara_categories_changed']}")
     print(f"  rule_count: {manifest['rule_count']}")
+    print(f"  finding_type_notes: {manifest['finding_type_notes']}")
 
 
 if __name__ == "__main__":

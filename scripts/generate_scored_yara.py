@@ -160,6 +160,16 @@ def inject_score_meta(raw_rule_text, score):
         f'\t\trisk_score = {score["risk_score"]}',
         f'\t\trisk_justification = "{yara_escape(score["risk_justification"])}"',
     ]
+    # finding_type (malicious|vulnerability) + optional needs_review flag --
+    # see .claude/criterioPuntuacionReglas.md. Older entries in
+    # yara_rule_scores.json may not have been backfilled yet, so these stay
+    # optional rather than a hard KeyError.
+    if "finding_type" in score:
+        lines.append(f'\t\tfinding_type = "{yara_escape(score["finding_type"])}"')
+    if score.get("needs_review"):
+        lines.append('\t\tneeds_review = true')
+        if "needs_review_reason" in score:
+            lines.append(f'\t\tneeds_review_reason = "{yara_escape(score["needs_review_reason"])}"')
     block = "\n".join(lines) + "\n"
     m = re.search(r'meta:\s*\n', raw_rule_text)
     if m:
