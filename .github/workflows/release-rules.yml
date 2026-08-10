@@ -320,6 +320,7 @@ jobs:
           SEMGREP_CUSTOM_TOTAL=$(jq -r '.rule_count.semgrep.custom' manifest.json)
           SEMGREP_THIRD_PARTY_TOTAL=$(jq -r '.rule_count.semgrep.third_party' manifest.json)
           YARA_TOTAL=$(jq -r '.rule_count.yara' manifest.json)
+          FINDING_TYPE_NOTES=$(jq -r '.finding_type_notes' manifest.json)
 
           NOTES_FILE=$(mktemp)
           cat > "$NOTES_FILE" <<EOF
@@ -332,10 +333,13 @@ jobs:
           - **Total reglas Semgrep de terceros (rules/semgrep/third-party/):** $SEMGREP_THIRD_PARTY_TOTAL
           - **Total reglas YARA publicadas (dist/yara_scored/):** $YARA_TOTAL
 
+          **Clasificacion malicious vs vulnerability (finding_type, ver .claude/criterioPuntuacionReglas.md):** $FINDING_TYPE_NOTES
+
           El fichero \`manifest.json\` adjunto incluye un hash sha256 por clave (lenguaje,
           vendor/carpeta o categoria YARA) para verificar la integridad de una descarga
-          parcial (sparse-checkout). Metodo de hash documentado en
-          \`scripts/build_release_manifest.py\`.
+          parcial (sparse-checkout), junto con \`finding_type_summary\` (el mismo desglose
+          malicious/vulnerability/needs_review por clave). Metodo de hash y de conteo
+          documentados en \`scripts/build_release_manifest.py\`.
           EOF
 
           gh release create "$VERSION" manifest.json \
@@ -368,7 +372,9 @@ jobs:
                 hashes: $m[0].hashes,
                 languages_changed: $m[0].languages_changed,
                 third_party_changed: $m[0].third_party_changed,
-                yara_categories_changed: $m[0].yara_categories_changed
+                yara_categories_changed: $m[0].yara_categories_changed,
+                finding_type_summary: $m[0].finding_type_summary,
+                finding_type_notes: $m[0].finding_type_notes
               }
             }')
 
