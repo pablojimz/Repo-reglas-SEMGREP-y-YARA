@@ -46,7 +46,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 10) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 10) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -60,7 +63,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 13) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 13) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -74,7 +80,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 72,
-      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: long, highly specific literal fragment (min length 23); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: long, highly specific literal fragment (min length 23); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -88,7 +97,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 72,
-      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: long, highly specific literal fragment (min length 26); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: long, highly specific literal fragment (min length 26); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -102,7 +114,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 72,
-      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: long, highly specific literal fragment (min length 20); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: long, highly specific literal fragment (min length 20); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -116,7 +131,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 72,
-      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: long, highly specific literal fragment (min length 18); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: long, highly specific literal fragment (min length 18); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -130,7 +148,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 72,
-      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: long, highly specific literal fragment (min length 24); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: long, highly specific literal fragment (min length 24); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -144,7 +165,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 72,
-      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: long, highly specific literal fragment (min length 21); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: long, highly specific literal fragment (min length 21); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -158,7 +182,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 84,
-      "risk_justification": "Process/thread-context manipulation primitive (SetThreadContext-style) -- also a common code-injection building block, not just passive detection. Confidence: long, highly specific literal fragment (min length 16); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Process/thread-context manipulation primitive (SetThreadContext-style) -- also a common code-injection building block, not just passive detection. Confidence: long, highly specific literal fragment (min length 16); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -172,7 +199,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 72,
-      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: long, highly specific literal fragment (min length 16); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: long, highly specific literal fragment (min length 16); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -186,7 +216,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 72,
-      "risk_justification": "Structured-exception-handler abuse to detect/evade a debugger -- subverts an analysis/security control. Confidence: long, highly specific literal fragment (min length 18); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Structured-exception-handler abuse to detect/evade a debugger -- subverts an analysis/security control. Confidence: long, highly specific literal fragment (min length 18); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -200,7 +233,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "Structured-exception-handler abuse to detect/evade a debugger -- subverts an analysis/security control. Confidence: specific-looking literal (min length 12) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Structured-exception-handler abuse to detect/evade a debugger -- subverts an analysis/security control. Confidence: specific-looking literal (min length 12) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -214,7 +250,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 72,
-      "risk_justification": "Structured-exception-handler abuse to detect/evade a debugger -- subverts an analysis/security control. Confidence: long, highly specific literal fragment (min length 16); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Structured-exception-handler abuse to detect/evade a debugger -- subverts an analysis/security control. Confidence: long, highly specific literal fragment (min length 16); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -228,7 +267,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 72,
-      "risk_justification": "Structured-exception-handler abuse to detect/evade a debugger -- subverts an analysis/security control. Confidence: long, highly specific literal fragment (min length 27); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Structured-exception-handler abuse to detect/evade a debugger -- subverts an analysis/security control. Confidence: long, highly specific literal fragment (min length 27); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -243,7 +285,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "Structured-exception-handler abuse to detect/evade a debugger -- subverts an analysis/security control. Confidence: regex/byte-pattern only (not individually inspected); medium confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Structured-exception-handler abuse to detect/evade a debugger -- subverts an analysis/security control. Confidence: regex/byte-pattern only (not individually inspected); medium confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -258,7 +303,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "Structured-exception-handler abuse to detect/evade a debugger -- subverts an analysis/security control. Confidence: regex/byte-pattern only (not individually inspected); medium confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Structured-exception-handler abuse to detect/evade a debugger -- subverts an analysis/security control. Confidence: regex/byte-pattern only (not individually inspected); medium confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -269,7 +317,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 49,
-      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: specific-looking literal (min length 10) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: specific-looking literal (min length 10) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -280,7 +331,10 @@
       "confidence_score": 30,
       "exploitability_score": 80,
       "risk_score": 40,
-      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: very short literal(s) (min length 4); high FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: very short literal(s) (min length 4); high FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -291,7 +345,10 @@
       "confidence_score": 30,
       "exploitability_score": 80,
       "risk_score": 40,
-      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: very short literal(s) (min length 4); high FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: very short literal(s) (min length 4); high FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -302,7 +359,10 @@
       "confidence_score": 30,
       "exploitability_score": 80,
       "risk_score": 40,
-      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: very short literal(s) (min length 4); high FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: very short literal(s) (min length 4); high FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -313,7 +373,10 @@
       "confidence_score": 30,
       "exploitability_score": 80,
       "risk_score": 40,
-      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: very short literal(s) (min length 4); high FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: very short literal(s) (min length 4); high FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -324,7 +387,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 61,
-      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: long, highly specific literal fragment (min length 44); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: long, highly specific literal fragment (min length 44); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -335,7 +401,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 61,
-      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: requires 3 specific literal fragments to ALL match (min length 10); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: requires 3 specific literal fragments to ALL match (min length 10); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -346,7 +415,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 49,
-      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: mixed specificity literal(s) (min length 6); moderate FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: mixed specificity literal(s) (min length 6); moderate FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -357,7 +429,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 61,
-      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: long, highly specific literal fragment (min length 36); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: long, highly specific literal fragment (min length 36); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -368,7 +443,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 61,
-      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: long, highly specific literal fragment (min length 23); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: long, highly specific literal fragment (min length 23); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -379,7 +457,10 @@
       "confidence_score": 30,
       "exploitability_score": 80,
       "risk_score": 52,
-      "risk_justification": "[Possibly employs anti-virtualization techniques] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: very short literal(s) (min length 4); high FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Possibly employs anti-virtualization techniques] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: very short literal(s) (min length 4); high FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -390,7 +471,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 49,
-      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: regex/byte-pattern only (not individually inspected); medium confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: regex/byte-pattern only (not individually inspected); medium confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -401,7 +485,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 61,
-      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: long, highly specific literal fragment (min length 21); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: long, highly specific literal fragment (min length 21); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -412,7 +499,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 49,
-      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: mixed specificity literal(s) (min length 7); moderate FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: mixed specificity literal(s) (min length 7); moderate FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -423,7 +513,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 49,
-      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: mixed specificity literal(s) (min length 5); moderate FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: mixed specificity literal(s) (min length 5); moderate FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -434,7 +527,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 49,
-      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: regex/byte-pattern only (not individually inspected); medium confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: regex/byte-pattern only (not individually inspected); medium confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -445,7 +541,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 49,
-      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: mixed specificity literal(s) (min length 7); moderate FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: mixed specificity literal(s) (min length 7); moderate FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -459,7 +558,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "[Anti-debug process memory working set size check] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: regex/byte-pattern only (not individually inspected); medium confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Anti-debug process memory working set size check] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: regex/byte-pattern only (not individually inspected); medium confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -472,7 +574,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "[Detection of Virtual Appliances through the use of WMI for use of evasion.] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: mixed specificity literal(s) (min length 6); moderate FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Detection of Virtual Appliances through the use of WMI for use of evasion.] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: mixed specificity literal(s) (min length 6); moderate FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -483,7 +588,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "[Checks if being debugged] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 12) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Checks if being debugged] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 12) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -494,7 +602,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "[Checks for the presence of known debug tools] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 10) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Checks for the presence of known debug tools] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 10) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -505,7 +616,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 72,
-      "risk_justification": "[Anti-Sandbox checks for Joe Sandbox] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: requires 3 specific literal fragments to ALL match (min length 13); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Anti-Sandbox checks for Joe Sandbox] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: requires 3 specific literal fragments to ALL match (min length 13); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -516,7 +630,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "[Anti-Sandbox checks for Anubis] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 13) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Anti-Sandbox checks for Anubis] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 13) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -527,7 +644,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "[Anti-Sandbox checks for ThreatExpert] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 11) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Anti-Sandbox checks for ThreatExpert] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 11) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -538,7 +658,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "[Anti-Sandbox checks for Sandboxie] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 11) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Anti-Sandbox checks for Sandboxie] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 11) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -549,7 +672,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 72,
-      "risk_justification": "[Anti-Sandbox checks for CWSandbox] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: requires 2 specific literal fragments to ALL match (min length 23); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Anti-Sandbox checks for CWSandbox] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: requires 2 specific literal fragments to ALL match (min length 23); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -560,7 +686,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 72,
-      "risk_justification": "[AntiVM checks for VirtualBox] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: long, highly specific literal fragment (min length 15); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[AntiVM checks for VirtualBox] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: long, highly specific literal fragment (min length 15); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -571,7 +700,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "[AntiVM checks for VMWare] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 10) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[AntiVM checks for VMWare] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 10) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -582,7 +714,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "[AntiVM checks for Bios version] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 13) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[AntiVM checks for Bios version] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 13) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -593,7 +728,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "[Disable AntiVirus] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: mixed specificity literal(s) (min length 7); moderate FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Disable AntiVirus] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: mixed specificity literal(s) (min length 7); moderate FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -604,7 +742,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 72,
-      "risk_justification": "[Disable User Access Control] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: requires 2 specific literal fragments to ALL match (min length 16); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Disable User Access Control] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: requires 2 specific literal fragments to ALL match (min length 16); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -615,7 +756,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "[Disable Firewall] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 11) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Disable Firewall] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 11) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -626,7 +770,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "[Disable Registry editor] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 11) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Disable Registry editor] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 11) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -637,7 +784,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "[Bypass DEP] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 17) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Bypass DEP] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 17) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -648,7 +798,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "[Disable Task Manager] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 14) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Disable Task Manager] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 14) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -659,7 +812,10 @@
       "confidence_score": 100,
       "exploitability_score": 80,
       "risk_score": 61,
-      "risk_justification": "[Check if hotfix are applied] Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: long, highly specific literal fragment (min length 55); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Check if hotfix are applied] Passive environment/VM fingerprinting (registry key, driver, tool artifact) -- reconnaissance signal, not direct harm on its own. Confidence: long, highly specific literal fragment (min length 55); low FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -670,7 +826,10 @@
       "confidence_score": 60,
       "exploitability_score": 80,
       "risk_score": 60,
-      "risk_justification": "[Affect hook table] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 10) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Affect hook table] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: specific-looking literal (min length 10) but only single/weak corroboration; moderate confidence. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -683,7 +842,10 @@
       "confidence_score": 30,
       "exploitability_score": 80,
       "risk_score": 52,
-      "risk_justification": "[Following Rule is referenced from AlienVault's Yara rule repository.This rule contains additional processes and driver names.] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: very short literal(s) (min length 4); high FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required."
+      "risk_justification": "[Following Rule is referenced from AlienVault's Yara rule repository.This rule contains additional processes and driver names.] Runtime debugger-presence/anti-analysis check -- subverts an analysis/security control, common in malware to evade detection. Confidence: very short literal(s) (min length 4); high FP risk. Executes unconditionally as part of normal program startup/runtime, no special flag required.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "tecnica dual-use; contexto del ruleset (firmas pensadas para triage de malware) hace mas probable malicious, pero el mismo patron aparece tambien en DRM/anti-cheat legitimo"
     },
     {
       "file": "webshells/WShell_APT_Laudanum.yar",
