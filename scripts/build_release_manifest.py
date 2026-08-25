@@ -92,6 +92,20 @@ finding_type_notes es una frase generada a partir de los totales globales,
 pensada para ir directamente en las notas de la release / el payload de
 repository_dispatch sin que el consumidor tenga que sumar los conteos el
 mismo.
+
+--------------------------------------------------------------------------
+official_registry_configs:
+--------------------------------------------------------------------------
+Lista de IDs del registro oficial de Semgrep (semgrep.dev/r), p.ej.
+"p/security-audit". NO son reglas ni contenido -- son solo nombres que el
+consumidor (watch_gate) usa para pedir esas reglas EN CALIENTE, en su
+propia ejecucion, directamente al registro oficial de Semgrep, Inc.
+(--config=<id>). Este repo nunca descarga, cachea ni empaqueta ese
+contenido: solo declara la lista curada, igual que hashes/rule_count
+declaran lo que si esta commiteado aqui. Ver
+.claude/analisisLicenciaSemgrepOficial.md para el analisis completo de por
+que esto es compatible con la Semgrep Rules License v1.0 y por que
+incluir semgrep/semgrep-rules directamente en third-party/ no lo es.
 """
 import argparse
 import datetime
@@ -107,6 +121,19 @@ REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 SEMGREP_CUSTOM_ROOT = REPO_ROOT / "rules" / "semgrep" / "custom"
 SEMGREP_THIRD_PARTY_ROOT = REPO_ROOT / "rules" / "semgrep" / "third-party"
 YARA_ROOT = REPO_ROOT / "dist" / "yara_scored"
+
+# IDs del registro oficial de Semgrep (semgrep.dev/r) que el consumidor
+# (watch_gate) debe pedir EN CALIENTE, en su propia ejecucion, con
+# --config=<id>. Deliberadamente son solo identificadores, nunca contenido:
+# este repo nunca descarga, cachea ni redistribuye el texto de esas reglas
+# -- ver .claude/analisisLicenciaSemgrepOficial.md para el analisis de
+# licencia (Semgrep Rules License v1.0) que sustenta por que esto es
+# distinto de incluir semgrep/semgrep-rules en third-party/. Lista curada a
+# mano; anadir/quitar aqui, no en el consumidor.
+OFFICIAL_REGISTRY_CONFIGS = [
+    "p/security-audit",
+    "p/owasp-top-ten",
+]
 
 # Un fichero de reglas Semgrep contiene una lista `rules:` cuyos elementos
 # empiezan por "- id:"; contar esas lineas equivale a contar reglas.
@@ -372,6 +399,11 @@ def main():
         },
         "finding_type_summary": finding_type_summary,
         "finding_type_notes": finding_type_notes,
+        # Solo IDs del registro oficial de Semgrep -- nunca contenido de
+        # regla. El consumidor los pide el mismo, en su propia ejecucion,
+        # via --config=<id> contra el registro oficial. Ver
+        # OFFICIAL_REGISTRY_CONFIGS arriba y .claude/analisisLicenciaSemgrepOficial.md.
+        "official_registry_configs": OFFICIAL_REGISTRY_CONFIGS,
     }
 
     out_path = pathlib.Path(args.out)
@@ -383,6 +415,7 @@ def main():
     print(f"  yara_categories_changed: {manifest['yara_categories_changed']}")
     print(f"  rule_count: {manifest['rule_count']}")
     print(f"  finding_type_notes: {manifest['finding_type_notes']}")
+    print(f"  official_registry_configs: {manifest['official_registry_configs']}")
 
 
 if __name__ == "__main__":

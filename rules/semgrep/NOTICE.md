@@ -27,3 +27,5 @@ Se evaluaron ~2.988 reglas adicionales del registro oficial de Semgrep (`semgrep
 - **`iosifache/semgrep-rules-manager`**: no es un repo de reglas, es una herramienta que agrega 14 fuentes de terceros; 11 de esas 14 ya estaban cubiertas por las fuentes de arriba, y las 3 restantes (`akabe1`, `atlassian-labs`, `apiiro`) no tenían tests o fallaban todos los suyos.
 
 Detalle completo de la metodología, cifras y decisiones de cada tanda en [`.claude/rules-audit-report.md`](../../.claude/rules-audit-report.md) y [`.claude/README.md`](../../.claude/README.md).
+
+Análisis de si existe alguna vía legítima de aprovechar `semgrep/semgrep-rules` sin violar su licencia (uso interno, herramienta-wrapper que invoca el registro oficial en tiempo de ejecución, etc.) en [`.claude/analisisLicenciaSemgrepOficial.md`](../../.claude/analisisLicenciaSemgrepOficial.md).
