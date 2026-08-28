@@ -1,9 +1,20 @@
 {
-  "generated_at": "2026-08-06T17:08:02.131974",
+  "generated_at": "2026-08-28T10:11:24.404607",
   "methodology": "risk = 0.45*severity_score + 0.30*confidence_score + 0.25*exploitability_score, per .claude/criterioPuntuacionReglas.md. Scores assigned by rule-family heuristics: webshell rules = severity 100 (RCE/backdoor), confidence from literal-string specificity (or source THOR score when available), exploitability 80 (fires on normal HTTP request to the deployed file). Antidebug/antivm rules = severity by technique class (25 passive VM fingerprinting / 50 debugger-detection or SEH abuse / 75 thread-context manipulation), confidence from literal-string specificity, exploitability 80 (runs unconditionally at runtime).",
   "source_repo": "yara_rules/Yara-Rules-Repo",
   "files_covered": [
     "antidebug_antivm/antidebug_antivm.yar",
+    "exploit_kits/EK_Angler.yar",
+    "exploit_kits/EK_Blackhole.yar",
+    "exploit_kits/EK_BleedingLife.yar",
+    "exploit_kits/EK_Crimepack.yar",
+    "exploit_kits/EK_Eleonore.yar",
+    "exploit_kits/EK_Fragus.yar",
+    "exploit_kits/EK_Phoenix.yar",
+    "exploit_kits/EK_Sakura.yar",
+    "exploit_kits/EK_ZeroAcces.yar",
+    "exploit_kits/EK_Zerox88.yar",
+    "exploit_kits/EK_Zeus.yar",
     "webshells/WShell_APT_Laudanum.yar",
     "webshells/WShell_ASPXSpy.yar",
     "webshells/WShell_ChinaChopper.yar",
@@ -16,6 +27,17 @@
   ],
   "per_file_rule_counts": {
     "antidebug_antivm/antidebug_antivm.yar": 55,
+    "exploit_kits/EK_Angler.yar": 10,
+    "exploit_kits/EK_Blackhole.yar": 16,
+    "exploit_kits/EK_BleedingLife.yar": 4,
+    "exploit_kits/EK_Crimepack.yar": 2,
+    "exploit_kits/EK_Eleonore.yar": 6,
+    "exploit_kits/EK_Fragus.yar": 7,
+    "exploit_kits/EK_Phoenix.yar": 17,
+    "exploit_kits/EK_Sakura.yar": 2,
+    "exploit_kits/EK_ZeroAcces.yar": 7,
+    "exploit_kits/EK_Zerox88.yar": 2,
+    "exploit_kits/EK_Zeus.yar": 1,
     "webshells/WShell_APT_Laudanum.yar": 18,
     "webshells/WShell_ASPXSpy.yar": 1,
     "webshells/WShell_ChinaChopper.yar": 2,
@@ -26,7 +48,7 @@
     "webshells/Wshell_ChineseSpam.yar": 2,
     "webshells/Wshell_fire2013.yar": 1
   },
-  "total_rules_scored": 694,
+  "total_rules_scored": 768,
   "private_helper_rules_skipped": [
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -8618,6 +8640,1051 @@
       "exploitability_score": 80,
       "risk_score": 95,
       "risk_justification": "[Catches a webshell] Web shell / backdoor signature -- indicates a deployed remote-code-execution capability if it matches. Confidence: requires 2 specific literal fragments to ALL match (min length 51); low FP risk. Triggers whenever the shell is invoked via a normal HTTP request to the deployed file -- no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Angler.yar",
+      "rule_name": "AnglerEKredirector",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Angler exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Angler.yar",
+      "rule_name": "angler_flash",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Angler exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Angler.yar",
+      "rule_name": "angler_flash2",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Angler exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Angler.yar",
+      "rule_name": "angler_flash4",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Angler exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Angler.yar",
+      "rule_name": "angler_flash5",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Angler exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Angler.yar",
+      "rule_name": "angler_flash_uncompressed",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Angler exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Angler.yar",
+      "rule_name": "angler_html",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Angler exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Angler.yar",
+      "rule_name": "angler_html2",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Angler exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Angler.yar",
+      "rule_name": "angler_jar",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Angler exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Angler.yar",
+      "rule_name": "angler_js",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Angler exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Blackhole.yar",
+      "rule_name": "blackhole2_jar",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Blackhole exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Blackhole.yar",
+      "rule_name": "blackhole2_jar2",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Blackhole exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Blackhole.yar",
+      "rule_name": "blackhole2_jar3",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Blackhole exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Blackhole.yar",
+      "rule_name": "blackhole2_pdf",
+      "category": "exploit_kit",
+      "tags": [
+        "EK",
+        "PDF"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Blackhole exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Blackhole.yar",
+      "rule_name": "blackhole_basic",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 30,
+      "exploitability_score": 80,
+      "risk_score": 74,
+      "risk_justification": "[Blackhole exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: low -- the pattern relies on a loose generic regex, very short generic tokens, or a bundled well-known third-party library/framework fragment rather than exploit-specific content, so false-positive risk against unrelated legitimate pages is substantial. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Blackhole.yar",
+      "rule_name": "blackhole1_jar",
+      "category": "exploit_kit",
+      "tags": [],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Blackhole exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Blackhole.yar",
+      "rule_name": "blackhole2_css",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[Blackhole exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "condition is \"18 of them\" but only 9 $string identifiers are declared in this rule -- mathematically unsatisfiable, the rule can never match as written; needs a human fix (correct threshold or add the missing strings) before it adds any detection value"
+    },
+    {
+      "file": "exploit_kits/EK_Blackhole.yar",
+      "rule_name": "blackhole2_htm",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Blackhole exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Blackhole.yar",
+      "rule_name": "blackhole2_htm10",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[Blackhole exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Blackhole.yar",
+      "rule_name": "blackhole2_htm11",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 30,
+      "exploitability_score": 80,
+      "risk_score": 74,
+      "risk_justification": "[Blackhole exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: low -- the pattern relies on a loose generic regex, very short generic tokens, or a bundled well-known third-party library/framework fragment rather than exploit-specific content, so false-positive risk against unrelated legitimate pages is substantial. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Blackhole.yar",
+      "rule_name": "blackhole2_htm12",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[Blackhole exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Blackhole.yar",
+      "rule_name": "blackhole2_htm3",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Blackhole exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Blackhole.yar",
+      "rule_name": "blackhole2_htm4",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Blackhole exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Blackhole.yar",
+      "rule_name": "blackhole2_htm5",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Blackhole exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Blackhole.yar",
+      "rule_name": "blackhole2_htm6",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[Blackhole exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Blackhole.yar",
+      "rule_name": "blackhole2_htm8",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Blackhole exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_BleedingLife.yar",
+      "rule_name": "bleedinglife2_adobe_2010_1297_exploit",
+      "category": "exploit_kit",
+      "tags": [
+        "EK",
+        "PDF"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[BleedingLife2 exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_BleedingLife.yar",
+      "rule_name": "bleedinglife2_adobe_2010_2884_exploit",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[BleedingLife2 exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_BleedingLife.yar",
+      "rule_name": "bleedinglife2_jar2",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[BleedingLife2 exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_BleedingLife.yar",
+      "rule_name": "bleedinglife2_java_2010_0842_exploit",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[BleedingLife2 exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Crimepack.yar",
+      "rule_name": "crimepack_jar",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[CrimePack exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Crimepack.yar",
+      "rule_name": "crimepack_jar3",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[CrimePack exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Eleonore.yar",
+      "rule_name": "eleonore_jar",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Eleonore exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Eleonore.yar",
+      "rule_name": "eleonore_jar2",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[Eleonore exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Eleonore.yar",
+      "rule_name": "eleonore_jar3",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Eleonore exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Eleonore.yar",
+      "rule_name": "eleonore_js",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 30,
+      "exploitability_score": 80,
+      "risk_score": 74,
+      "risk_justification": "[Eleonore exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: low -- the pattern relies on a loose generic regex, very short generic tokens, or a bundled well-known third-party library/framework fragment rather than exploit-specific content, so false-positive risk against unrelated legitimate pages is substantial. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Eleonore.yar",
+      "rule_name": "eleonore_js2",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[Eleonore exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Eleonore.yar",
+      "rule_name": "eleonore_js3",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Eleonore exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Fragus.yar",
+      "rule_name": "fragus_htm",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Fragus exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Fragus.yar",
+      "rule_name": "fragus_js",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Fragus exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Fragus.yar",
+      "rule_name": "fragus_js2",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Fragus exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Fragus.yar",
+      "rule_name": "fragus_js_flash",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Fragus exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Fragus.yar",
+      "rule_name": "fragus_js_java",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Fragus exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Fragus.yar",
+      "rule_name": "fragus_js_quicktime",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Fragus exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Fragus.yar",
+      "rule_name": "fragus_js_vml",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[Fragus exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_html",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_html10",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_html11",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_html2",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_html3",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_html4",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_html5",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_html6",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_html7",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_html8",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_html9",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_jar",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_jar2",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_jar3",
+      "category": "exploit_kit",
+      "tags": [
+        "EK",
+        "Jar"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_pdf",
+      "category": "exploit_kit",
+      "tags": [
+        "EK",
+        "PDF"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_pdf2",
+      "category": "exploit_kit",
+      "tags": [
+        "EK",
+        "PDF"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Phoenix.yar",
+      "rule_name": "phoenix_pdf3",
+      "category": "exploit_kit",
+      "tags": [
+        "EK",
+        "PDF"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[Phoenix exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Sakura.yar",
+      "rule_name": "sakura_jar",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[Sakura exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Sakura.yar",
+      "rule_name": "sakura_jar2",
+      "category": "exploit_kit",
+      "tags": [
+        "EK",
+        "jar"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[Sakura exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_ZeroAcces.yar",
+      "rule_name": "zeroaccess_css",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[ZeroAccess exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_ZeroAcces.yar",
+      "rule_name": "zeroaccess_css2",
+      "category": "exploit_kit",
+      "tags": [
+        "EK",
+        "css"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[ZeroAccess exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_ZeroAcces.yar",
+      "rule_name": "zeroaccess_htm",
+      "category": "exploit_kit",
+      "tags": [
+        "EK",
+        "html"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[ZeroAccess exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_ZeroAcces.yar",
+      "rule_name": "zeroaccess_js",
+      "category": "exploit_kit",
+      "tags": [
+        "EK",
+        "js"
+      ],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[ZeroAccess exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_ZeroAcces.yar",
+      "rule_name": "zeroaccess_js2",
+      "category": "exploit_kit",
+      "tags": [
+        "EK",
+        "js"
+      ],
+      "severity_score": 100,
+      "confidence_score": 30,
+      "exploitability_score": 80,
+      "risk_score": 74,
+      "risk_justification": "[ZeroAccess exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: low -- the pattern relies on a loose generic regex, very short generic tokens, or a bundled well-known third-party library/framework fragment rather than exploit-specific content, so false-positive risk against unrelated legitimate pages is substantial. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_ZeroAcces.yar",
+      "rule_name": "zeroaccess_js3",
+      "category": "exploit_kit",
+      "tags": [
+        "EK",
+        "js"
+      ],
+      "severity_score": 100,
+      "confidence_score": 30,
+      "exploitability_score": 80,
+      "risk_score": 74,
+      "risk_justification": "[ZeroAccess exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: low -- the pattern relies on a loose generic regex, very short generic tokens, or a bundled well-known third-party library/framework fragment rather than exploit-specific content, so false-positive risk against unrelated legitimate pages is substantial. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_ZeroAcces.yar",
+      "rule_name": "zeroaccess_js4",
+      "category": "exploit_kit",
+      "tags": [
+        "EK",
+        "js"
+      ],
+      "severity_score": 100,
+      "confidence_score": 30,
+      "exploitability_score": 80,
+      "risk_score": 74,
+      "risk_justification": "[ZeroAccess exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: low -- the pattern relies on a loose generic regex, very short generic tokens, or a bundled well-known third-party library/framework fragment rather than exploit-specific content, so false-positive risk against unrelated legitimate pages is substantial. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Zerox88.yar",
+      "rule_name": "zerox88_js2",
+      "category": "exploit_kit",
+      "tags": [],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[0x88 exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Zerox88.yar",
+      "rule_name": "zerox88_js3",
+      "category": "exploit_kit",
+      "tags": [],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "[0x88 exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: high -- the string set includes sample-specific literal artifacts (obfuscated class/variable names, unique binary/base64 blobs, panel-specific filenames, or literal hashes/IDs) with low collision risk against unrelated content. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "exploit_kits/EK_Zeus.yar",
+      "rule_name": "zeus_js",
+      "category": "exploit_kit",
+      "tags": [
+        "EK"
+      ],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "[Zeus exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
       "finding_type": "malicious"
     }
   ]
