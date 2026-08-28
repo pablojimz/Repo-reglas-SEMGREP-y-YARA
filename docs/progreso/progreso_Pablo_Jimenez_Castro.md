@@ -3,7 +3,7 @@
 ## Metadatos
 
 - **Responsable:** Pablo Jiménez Castro (`pablojimenezcastro@uma.es`, commits como `pablojimz`)
-- **Última actualización:** 2026-08-07
+- **Última actualización:** 2026-08-28
 - **Estado general:** En desarrollo activo — dataset curado de reglas SAST/YARA con automatización parcial
 - **Última revisión realizada por:** Asistente Claude Code, a petición de Pablo Jiménez Castro
 - **Componentes registrados:** Reglas Semgrep (`rules/semgrep/`), Motor de scoring y generación de YARA (`scripts/generate_scored_yara.py` + `yara_scores_output/` + submódulo `yara_rules/Yara-Rules-Repo`), Pipeline de publicación automática (`.github/workflows/publish-scored-yara.yml`)
@@ -21,7 +21,7 @@ El trabajo de Pablo cubre dos líneas independientes y no acopladas entre sí:
 1. **Reglas Semgrep** (`rules/semgrep/`): ~814 reglas (64 propias + 750 de terceros) en 17 lenguajes, cada una con una puntuación de riesgo (`risk_score`) calculada según una fórmula ponderada documentada en `.claude/criterioPuntuacionReglas.md`.
 2. **Reglas YARA puntuadas y publicadas** (`scripts/generate_scored_yara.py`, `yara_scores_output/`, `dist/yara_scored/`): un script que toma un subconjunto puntuado de reglas del submódulo `Yara-Rules-Repo` y genera un ruleset YARA autocontenido con los scores incrustados en el `meta:` de cada regla, publicado automáticamente vía GitHub Actions.
 
-La parte Semgrep está más completa en volumen de reglas pero su proceso de scoring es manual/asistido por LLM y no está automatizado ni validado por script. La parte YARA cubre solo 2 de las ~15 categorías del submódulo origen, pero sí tiene un pipeline reproducible y automatizado de extremo a extremo (script + CI que commitea el resultado).
+La parte Semgrep está más completa en volumen de reglas pero su proceso de scoring es manual/asistido por LLM y no está automatizado ni validado por script. La parte YARA cubre 3 de las ~15 categorías del submódulo origen (**768 reglas puntuadas**: `antidebug_antivm` 54, `webshell` 640, `exploit_kit` 74, tras incorporar `exploit_kits/` el 2026-08-28), pero sí tiene un pipeline reproducible y automatizado de extremo a extremo (script + CI que commitea el resultado).
 
 ---
 
@@ -125,8 +125,8 @@ La parte Semgrep está más completa en volumen de reglas pero su proceso de sco
 - **Responsable:** Pablo Jiménez Castro
 - **Ubicación en el proyecto:** `scripts/generate_scored_yara.py`, `yara_scores_output/yara_rule_scores.json`, submódulo `yara_rules/Yara-Rules-Repo`
 - **Estado actual:** Funcional y verificado — genera salida real en `dist/yara_scored/`
-- **Última revisión:** commit `78c04f4` (2026-08-06) — "Add generator script and curated scored YARA rule set"
-- **Nivel de madurez:** Alto para las 2 categorías cubiertas (antidebug_antivm, webshells); bajo en cobertura global del submódulo origen
+- **Última revisión:** commit `37ad66a` (2026-08-28) — "feat: puntuar y publicar categoría YARA exploit_kits [minor]"
+- **Nivel de madurez:** Alto para las 3 categorías cubiertas (antidebug_antivm, webshells, exploit_kits); bajo en cobertura global del submódulo origen
 
 ### Historial de cambios
 
@@ -135,6 +135,7 @@ La parte Semgrep está más completa en volumen de reglas pero su proceso de sco
 | 2026-08-06 | `fa748b6` — registrar `Yara-Rules-Repo` como submódulo git propiamente dicho | Corregir una integración previa del catálogo YARA que no era un submódulo real | pablojimz |
 | 2026-08-06 | `78aa857` — risk scores para reglas `antidebug_antivm` y `webshells` | Generar `yara_scores_output/yara_rule_scores.json` (694 reglas puntuadas) | pablojimz |
 | 2026-08-06 | `78c04f4` — script generador + ruleset YARA curado | Crear `scripts/generate_scored_yara.py` y publicar `dist/yara_scored/` | pablojimz |
+| 2026-08-28 | `37ad66a` — puntuar y publicar categoría `exploit_kits` (74 reglas: Angler, Blackhole, BleedingLife2, CrimePack, Eleonore, Fragus, Phoenix, Sakura, ZeroAccess, 0x88, Zeus) | Ampliar cobertura de scoring YARA a una 3ª categoría del submódulo origen; `total_rules_scored` pasa de 694 a 768 | pablojimz (asistido por Claude Code) |
 
 ### Estado actual
 
@@ -143,10 +144,11 @@ La parte Semgrep está más completa en volumen de reglas pero su proceso de sco
 - Parser propio de YARA por regex: `strip_comments()` elimina comentarios `//` y `/* */` respetando literales de cadena; `split_rules()` (usando `RULE_HEADER_RE`) segmenta el fichero en bloques `rule` / `private rule` / `global rule`.
 - `inject_score_meta()` inserta los 5 campos de score (`severity_score`, `confidence_score`, `exploitability_score`, `risk_score`, `risk_justification`) dentro del bloque `meta:` de cada regla (o crea el bloque si no existe).
 - Inclusión automática de las reglas `private` de las que depende una regla puntuada, para que el `.yar` de salida compile de forma autocontenida.
-- Cabecera autogenerada en cada fichero de salida con procedencia, fórmula de riesgo y fecha de generación (`dist/yara_scored/<misma-ruta>.yar`, actualmente 10 ficheros: `antidebug_antivm/antidebug_antivm.yar` + 9 ficheros de `webshells/`).
+- Cabecera autogenerada en cada fichero de salida con procedencia, fórmula de riesgo y fecha de generación (`dist/yara_scored/<misma-ruta>.yar`, actualmente 21 ficheros: `antidebug_antivm/antidebug_antivm.yar` + 9 ficheros de `webshells/` + 11 ficheros de `exploit_kits/`).
 
 **Pendiente / limitaciones conocidas:**
-- Solo 2 de las ~15 categorías del submódulo `Yara-Rules-Repo` están puntuadas y publicadas (`antidebug_antivm`, `webshells`, 694 reglas). El resto (`malware/`, `maldocs/`, `crypto/`, `cve_rules/`, `exploit_kits/`, `packers/`, `utils/`, `email/`, `mobile_malware/`, `capabilities/`, `deprecated/`) no está cubierto.
+- Solo 3 de las ~15 categorías del submódulo `Yara-Rules-Repo` están puntuadas y publicadas (`antidebug_antivm` 54 reglas, `webshell` 640 reglas, `exploit_kit` 74 reglas — 768 reglas en total). El resto (`malware/`, `maldocs/`, `crypto/`, `cve_rules/`, `packers/`, `utils/`, `email/`, `mobile_malware/` [vacía en el upstream, solo `.gitKeep`], `capabilities/`, `deprecated/`) no está cubierto.
+- Dentro de `exploit_kits/`, la regla `blackhole2_css` quedó marcada con `needs_review: true` en `yara_rule_scores.json`: su `condition` (`18 of them`) supera los 9 `$string` que declara, por lo que es matemáticamente insatisfacible y la regla nunca podrá matchear tal como está escrita en el submódulo origen — pendiente de que un humano decida si se corrige el umbral/strings o se descarta.
 - El parser de reglas YARA es una reimplementación simplificada (regex + máquina de estados básica para strings/comentarios), no una gramática YARA completa — no está confirmado si maneja correctamente todos los casos límite de sintaxis YARA (p. ej. `import` statements, comentarios anidados en `strings:` complejos). Pendiente de confirmar mediante pruebas contra el resto de categorías del submódulo.
 
 ### Arquitectura e integración
@@ -185,7 +187,7 @@ La parte Semgrep está más completa en volumen de reglas pero su proceso de sco
 
 ### Problemas detectados
 
-- Cobertura parcial: 694 reglas puntuadas frente a un total considerablemente mayor en el submódulo origen (10 de ~15+ categorías sin cubrir).
+- Cobertura parcial: 768 reglas puntuadas frente a un total considerablemente mayor en el submódulo origen. De las ~13 categorías con contenido real, 3 están cubiertas (`antidebug_antivm`, `webshells`, `exploit_kits`) y 9 siguen sin cubrir: `malware/` (406 ficheros/~2385 reglas), `packers/` (6 ficheros/~9320 reglas), `utils/` (35 ficheros/~261 reglas), `deprecated/`, `maldocs/`, `crypto/`, `capabilities/`, `cve_rules/`, `email/`; `mobile_malware/` está vacía en el upstream (solo `.gitKeep`), no aporta reglas.
 - No se ha localizado ninguna suite de tests (`tests/`, `pytest`, etc.) para el propio script — su corrección se verifica solo de forma indirecta al ejecutarlo y revisar la salida.
 - Manejo de errores mínimo: `git_show` lanza `RuntimeError` si `git show` falla, pero no hay una comprobación explícita previa de que el submódulo esté inicializado (`git submodule update --init`) — un clon sin `--recursive` fallaría con un traceback poco descriptivo en vez de un mensaje claro.
 - Acoplamiento estricto al esquema de `yara_scores_output/yara_rule_scores.json` (claves `"scores"`, `"file"`, `"rule_name"` y los 5 campos de score) sin validación de esquema — un JSON mal formado o con claves faltantes produce un `KeyError` en vez de un error explicativo.
@@ -199,8 +201,8 @@ La parte Semgrep está más completa en volumen de reglas pero su proceso de sco
 
 ### Estado para otros desarrolladores
 
-- **Estable:** el flujo completo para las 2 categorías ya cubiertas — probado y con la Action de CI en funcionamiento.
-- **Revisar antes de modificar:** el parser basado en regex (`strip_comments`/`split_rules`/`RULE_HEADER_RE`) — cualquier cambio puede alterar silenciosamente la extracción para sintaxis YARA no cubierta por los 10 ficheros actuales; conviene volver a ejecutar el script contra las rutas de `yara_rule_scores.json` tras cualquier modificación.
+- **Estable:** el flujo completo para las 3 categorías ya cubiertas — probado y con la Action de CI en funcionamiento.
+- **Revisar antes de modificar:** el parser basado en regex (`strip_comments`/`split_rules`/`RULE_HEADER_RE`) — cualquier cambio puede alterar silenciosamente la extracción para sintaxis YARA no cubierta por los 21 ficheros actuales; conviene volver a ejecutar el script contra las rutas de `yara_rule_scores.json` tras cualquier modificación.
 - **Conocimientos necesarios:** sintaxis básica de YARA, submódulos git, Python estándar.
 - **Pendiente:** ampliar cobertura de categorías; añadir tests.
 
@@ -308,7 +310,7 @@ graph TD
 
     subgraph "Pipeline YARA (2.2 + 2.3) — automatizado"
         D["Submódulo yara_rules/Yara-Rules-Repo<br/>(catálogo origen)"] -->|"git show HEAD:..."| E["scripts/generate_scored_yara.py"]
-        F["yara_scores_output/yara_rule_scores.json<br/>(694 reglas puntuadas)"] --> E
+        F["yara_scores_output/yara_rule_scores.json<br/>(768 reglas puntuadas)"] --> E
         E --> G["dist/yara_scored/*.yar<br/>(ruleset curado con meta: enriquecido)"]
         H[".github/workflows/publish-scored-yara.yml"] -->|"ejecuta en push/main"| E
         H -->|"commit automático si hay cambios"| G
@@ -333,7 +335,7 @@ graph TD
 
 **Componentes en desarrollo:**
 - Catálogo de reglas Semgrep (2.1): amplio en volumen pero con procesos de testing y scoring todavía manuales, sin CI ni owners asignados.
-- Cobertura de scoring YARA (2.2): solo 2 de ~15 categorías del submódulo origen están cubiertas.
+- Cobertura de scoring YARA (2.2): solo 3 de ~13 categorías con contenido real del submódulo origen están cubiertas (768 de un total mucho mayor de reglas).
 
 **Riesgos principales:**
 - Falta de automatización de testing/scoring en el lado Semgrep — riesgo de reglas rotas o mal puntuadas sin detección temprana.
@@ -351,7 +353,7 @@ graph TD
 - Añadir validación de compilación YARA (`yara -c` / `yara-python`) al workflow de publicación antes de commitear.
 
 ## Media prioridad
-- Ampliar la cobertura de scoring YARA al resto de categorías del submódulo (`malware/`, `maldocs/`, `crypto/`, `cve_rules/`, `exploit_kits/`, `packers/`, `utils/`, `email/`, `mobile_malware/`, `capabilities/`).
+- Ampliar la cobertura de scoring YARA al resto de categorías del submódulo (`malware/`, `maldocs/`, `crypto/`, `cve_rules/`, `packers/`, `utils/`, `email/`, `capabilities/`, `deprecated/`; `exploit_kits/` ya cubierta el 2026-08-28).
 - Añadir tests unitarios al parser de `scripts/generate_scored_yara.py` (`strip_comments`, `split_rules`, `inject_score_meta`).
 - Crear un script de validación del `risk_score` para las reglas Semgrep, equivalente en espíritu al que ya existe implícitamente para YARA.
 - Validar el esquema de `yara_scores_output/yara_rule_scores.json` antes de procesarlo.
