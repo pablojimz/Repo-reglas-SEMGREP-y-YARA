@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-28T10:11:24.404607",
+  "generated_at": "2026-08-28T10:28:12.678170",
   "methodology": "risk = 0.45*severity_score + 0.30*confidence_score + 0.25*exploitability_score, per .claude/criterioPuntuacionReglas.md. Scores assigned by rule-family heuristics: webshell rules = severity 100 (RCE/backdoor), confidence from literal-string specificity (or source THOR score when available), exploitability 80 (fires on normal HTTP request to the deployed file). Antidebug/antivm rules = severity by technique class (25 passive VM fingerprinting / 50 debugger-detection or SEH abuse / 75 thread-context manipulation), confidence from literal-string specificity, exploitability 80 (runs unconditionally at runtime).",
   "source_repo": "yara_rules/Yara-Rules-Repo",
   "files_covered": [
@@ -15,6 +15,12 @@
     "exploit_kits/EK_ZeroAcces.yar",
     "exploit_kits/EK_Zerox88.yar",
     "exploit_kits/EK_Zeus.yar",
+    "utils/base64.yar",
+    "utils/domain.yar",
+    "utils/ip.yar",
+    "utils/magic.yar",
+    "utils/suspicious_strings.yar",
+    "utils/url.yar",
     "webshells/WShell_APT_Laudanum.yar",
     "webshells/WShell_ASPXSpy.yar",
     "webshells/WShell_ChinaChopper.yar",
@@ -38,6 +44,12 @@
     "exploit_kits/EK_ZeroAcces.yar": 7,
     "exploit_kits/EK_Zerox88.yar": 2,
     "exploit_kits/EK_Zeus.yar": 1,
+    "utils/base64.yar": 1,
+    "utils/domain.yar": 1,
+    "utils/ip.yar": 1,
+    "utils/magic.yar": 1,
+    "utils/suspicious_strings.yar": 19,
+    "utils/url.yar": 1,
     "webshells/WShell_APT_Laudanum.yar": 18,
     "webshells/WShell_ASPXSpy.yar": 1,
     "webshells/WShell_ChinaChopper.yar": 2,
@@ -48,7 +60,7 @@
     "webshells/Wshell_ChineseSpam.yar": 2,
     "webshells/Wshell_fire2013.yar": 1
   },
-  "total_rules_scored": 768,
+  "total_rules_scored": 792,
   "private_helper_rules_skipped": [
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -9686,6 +9698,356 @@
       "risk_score": 83,
       "risk_justification": "[Zeus exploit kit] Drive-by landing-page/redirector/payload fingerprint -- matched content is itself part of known exploit-kit infrastructure that delivers a browser/plugin exploit and drops malware on the visitor with no interaction required. Confidence: moderate -- the string set mixes some exploit-kit-specific literals with more generic tokens (common web-framework boilerplate, generic component/class names, or generic structural markers) that could plausibly recur in unrelated benign content, though the required match threshold reduces false-positive risk somewhat. Triggers automatically when a normal browser renders the page or opens the file -- normal use, no special condition needed.",
       "finding_type": "malicious"
+    },
+    {
+      "file": "utils/base64.yar",
+      "rule_name": "contains_base64",
+      "category": "utils",
+      "tags": [
+        "Base64"
+      ],
+      "severity_score": 25,
+      "confidence_score": 30,
+      "exploitability_score": 80,
+      "risk_score": 40,
+      "risk_justification": "Extractor de IOC generico: cualquier bloque de 4+ caracteres en alfabeto base64 dispara la regla (binarios, imagenes, fuentes, cualquier dato comprimido/codificado la contienen); util como building block para extraer un posible artefacto embebido, no es un veredicto por si mismo.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "extractor de IOC generico: cualquier bloque de 4+ caracteres en alfabeto base64 dispara la regla (binarios, imagenes, fuentes, cualquier dato comprimido/codificado la contienen); util como building block para extraer un posible artefacto embebido, no es un veredicto por si mismo"
+    },
+    {
+      "file": "utils/domain.yar",
+      "rule_name": "domain",
+      "category": "utils",
+      "tags": [],
+      "severity_score": 25,
+      "confidence_score": 30,
+      "exploitability_score": 80,
+      "risk_score": 40,
+      "risk_justification": "Extractor de IOC generico: la regex no exige TLD valido ni contexto, matchea cualquier token con puntos/guiones (nombres de fichero, rutas, namespaces de codigo...); sirve para extraer un posible dominio, no prueba nada.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "extractor de IOC generico: la regex no exige TLD valido ni contexto, matchea cualquier token con puntos/guiones (nombres de fichero, rutas, namespaces de codigo...); sirve para extraer un posible dominio, no prueba nada"
+    },
+    {
+      "file": "utils/ip.yar",
+      "rule_name": "IP",
+      "category": "utils",
+      "tags": [],
+      "severity_score": 25,
+      "confidence_score": 30,
+      "exploitability_score": 80,
+      "risk_score": 40,
+      "risk_justification": "Extractor de IOC generico: matchea cualquier secuencia de digitos con el formato N.N.N.N o hex:hex de IPv6, sin validar rango; util para extraer una posible IP, no prueba nada por si mismo.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "extractor de IOC generico: matchea cualquier secuencia de digitos con el formato N.N.N.N o hex:hex de IPv6, sin validar rango; util para extraer una posible IP, no prueba nada por si mismo"
+    },
+    {
+      "file": "utils/magic.yar",
+      "rule_name": "maldoc_OLE_file_magic_number",
+      "category": "utils",
+      "tags": [
+        "maldoc"
+      ],
+      "severity_score": 25,
+      "confidence_score": 30,
+      "exploitability_score": 80,
+      "risk_score": 40,
+      "risk_justification": "Identifica el magic number del formato de fichero compuesto OLE (.doc/.xls/.ppt antiguos) -- cierto para el 100% de esos ficheros, sean o no maliciosos; sirve para enrutar la muestra a analisis de macros/streams OLE, no es un veredicto.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "identifica el magic number del formato de fichero compuesto OLE (.doc/.xls/.ppt antiguos) -- cierto para el 100% de esos ficheros, sean o no maliciosos; sirve para enrutar la muestra a analisis de macros/streams OLE, no es un veredicto"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "System_Tools",
+      "category": "utils",
+      "tags": [],
+      "severity_score": 50,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 60,
+      "risk_justification": "Misma tecnica que antidebug_antivm (deteccion de herramientas de monitorizacion por nombre de proceso: wireshark, procmon, netstat...); dual-use, tambien aparece en software legitimo que comprueba compatibilidad o en scripts de administracion.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "misma tecnica que antidebug_antivm (deteccion de herramientas de monitorizacion por nombre de proceso: wireshark, procmon, netstat...); dual-use, tambien aparece en software legitimo que comprueba compatibilidad o en scripts de administracion"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "Browsers",
+      "category": "utils",
+      "tags": [],
+      "severity_score": 75,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 72,
+      "risk_justification": "Incluye 'key3.db' y 'signons.sqlite', los ficheros de almacen de contrasenas guardadas del Firefox antiguo -- indicador de robo de credenciales de navegador, no solo deteccion de entorno; severidad mayor que las demas reglas de esta familia. Dual-use: las otras 3 strings (iexplore.exe/firefox.exe/chrome.exe) son ubicuas en software benigno (cualquier script de deteccion de navegador).",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "incluye 'key3.db' y 'signons.sqlite', los ficheros de almacen de contrasenas guardadas del Firefox antiguo -- indicador de robo de credenciales de navegador, no solo deteccion de entorno; severidad mayor que las demas reglas de esta familia. Dual-use: las otras 3 strings (iexplore.exe/firefox.exe/chrome.exe) son ubicuas en software benigno (cualquier script de deteccion de navegador)"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "RE_Tools",
+      "category": "utils",
+      "tags": [],
+      "severity_score": 50,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 60,
+      "risk_justification": "Misma tecnica que antidebug_antivm (deteccion de herramientas de ingenieria inversa por nombre de proceso: IDA, OllyDbg, WinDbg...); dual-use, un analista o un test de compatibilidad tambien puede referenciarlas.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "misma tecnica que antidebug_antivm (deteccion de herramientas de ingenieria inversa por nombre de proceso: IDA, OllyDbg, WinDbg...); dual-use, un analista o un test de compatibilidad tambien puede referenciarlas"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "Antivirus",
+      "category": "utils",
+      "tags": [],
+      "severity_score": 50,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 60,
+      "risk_justification": "Lista curada a partir del script killav.rb de Metasploit (nombres de proceso de decenas de antivirus historicos); el string por si solo solo prueba que el binario referencia el nombre, no que intente terminarlo -- dual-use, software de compatibilidad/inventario tambien enumera AVs.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "lista curada a partir del script killav.rb de Metasploit (nombres de proceso de decenas de antivirus historicos); el string por si solo solo prueba que el binario referencia el nombre, no que intente terminarlo -- dual-use, software de compatibilidad/inventario tambien enumera AVs"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "VM_Generic_Detection",
+      "category": "utils",
+      "tags": [
+        "AntiVM"
+      ],
+      "severity_score": 50,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 60,
+      "risk_justification": "Misma tecnica que antidebug_antivm (deteccion de entorno virtualizado por claves de registro genericas + instruccion 'red pill' + CLSIDs de audio); dual-use, aparece tambien en DRM/anti-cheat/instaladores que adaptan su comportamiento a VMs.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "misma tecnica que antidebug_antivm (deteccion de entorno virtualizado por claves de registro genericas + instruccion 'red pill' + CLSIDs de audio); dual-use, aparece tambien en DRM/anti-cheat/instaladores que adaptan su comportamiento a VMs"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "VMWare_Detection",
+      "category": "utils",
+      "tags": [
+        "AntiVM"
+      ],
+      "severity_score": 50,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 60,
+      "risk_justification": "Misma tecnica que antidebug_antivm (deteccion de VMware por nombres de driver, prefijos de MAC OUI, servicios); dual-use, cualquier software consciente de virtualizacion (herramientas de IT, instaladores) hace lo mismo.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "misma tecnica que antidebug_antivm (deteccion de VMware por nombres de driver, prefijos de MAC OUI, servicios); dual-use, cualquier software consciente de virtualizacion (herramientas de IT, instaladores) hace lo mismo"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "Sandboxie_Detection",
+      "category": "utils",
+      "tags": [
+        "AntiVM"
+      ],
+      "severity_score": 50,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 60,
+      "risk_justification": "Misma tecnica que antidebug_antivm (deteccion de Sandboxie por DLL/procesos); dual-use, tecnica de evasion de analisis comun mas alla de malware.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "misma tecnica que antidebug_antivm (deteccion de Sandboxie por DLL/procesos); dual-use, tecnica de evasion de analisis comun mas alla de malware"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "VirtualPC_Detection",
+      "category": "utils",
+      "tags": [
+        "AntiVM"
+      ],
+      "severity_score": 50,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 60,
+      "risk_justification": "Misma tecnica que antidebug_antivm (deteccion de Virtual PC); dual-use, mismo razonamiento que las demas detecciones de VM.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "misma tecnica que antidebug_antivm (deteccion de Virtual PC); dual-use, mismo razonamiento que las demas detecciones de VM"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "VirtualBox_Detection",
+      "category": "utils",
+      "tags": [
+        "AntiVM"
+      ],
+      "severity_score": 50,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 72,
+      "risk_justification": "Misma tecnica que antidebug_antivm (deteccion de VirtualBox), pero con confianza alta: combina nombres de driver/servicio muy especificos con OUI de MAC, vendor ID de PCI y rutas de registro exactas -- baja probabilidad de colision incidental. Dual-use: mismo razonamiento que las demas detecciones de VM (DRM/anti-cheat/IT tooling).",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "misma tecnica que antidebug_antivm (deteccion de VirtualBox), pero con confianza alta: combina nombres de driver/servicio muy especificos con OUI de MAC, vendor ID de PCI y rutas de registro exactas -- baja probabilidad de colision incidental. Dual-use: mismo razonamiento que las demas detecciones de VM (DRM/anti-cheat/IT tooling)"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "Parallels_Detection",
+      "category": "utils",
+      "tags": [
+        "AntiVM"
+      ],
+      "severity_score": 50,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 72,
+      "risk_justification": "Condition 'all of them' (AND, no OR) sobre 3 fragmentos de string mas un vendor ID de PCI -- exigir la coincidencia simultanea de las 4 reduce mucho el riesgo de falso positivo frente a las demas reglas de esta familia (que usan 'any of them'). Dual-use: mismo razonamiento que las demas detecciones de VM. Nota: el vendor ID 'VEN_80EE' es el mismo que usa VirtualBox_Detection en este mismo fichero -- posible copy-paste en el ruleset origen, no verificado contra hardware real de Parallels.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "condition 'all of them' (AND, no OR) sobre 3 fragmentos de string mas un vendor ID de PCI -- exigir la coincidencia simultanea de las 4 reduce mucho el riesgo de falso positivo frente a las demas reglas de esta familia (que usan 'any of them'). Dual-use: mismo razonamiento que las demas detecciones de VM. Nota: el vendor ID 'VEN_80EE' es el mismo que usa VirtualBox_Detection en este mismo fichero -- posible copy-paste en el ruleset origen, no verificado contra hardware real de Parallels"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "Qemu_Detection",
+      "category": "utils",
+      "tags": [
+        "AntiVM"
+      ],
+      "severity_score": 50,
+      "confidence_score": 30,
+      "exploitability_score": 80,
+      "risk_score": 52,
+      "risk_justification": "Unica string, la palabra generica 'qemu' sin mas contexto -- puede aparecer en comentarios, nombres de producto o texto no relacionado; confianza baja. Dual-use: mismo razonamiento que las demas detecciones de VM.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "unica string, la palabra generica 'qemu' sin mas contexto -- puede aparecer en comentarios, nombres de producto o texto no relacionado; confianza baja. Dual-use: mismo razonamiento que las demas detecciones de VM"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "Dropper_Strings",
+      "category": "utils",
+      "tags": [],
+      "severity_score": 75,
+      "confidence_score": 30,
+      "exploitability_score": 80,
+      "risk_score": 63,
+      "risk_justification": "Referencia rutas de persistencia de Windows (Run key, Services, Startup, %temp%, %allusersprofile%) -- capacidad real de persistencia/dropper, severidad mayor que 'solo detectar entorno'. Confianza baja: son rutas extremadamente comunes, cualquier instalador o script legitimo las referencia.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "referencia rutas de persistencia de Windows (Run key, Services, Startup, %temp%, %allusersprofile%) -- capacidad real de persistencia/dropper, severidad mayor que 'solo detectar entorno'. Confianza baja: son rutas extremadamente comunes, cualquier instalador o script legitimo las referencia"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "AutoIT_compiled_script",
+      "category": "utils",
+      "tags": [],
+      "severity_score": 50,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 72,
+      "risk_justification": "Identifica de forma fiable (strings muy especificas del runtime de AutoIt) que el binario es un script AutoIt compilado -- tecnica de empaquetado muy usada para envolver payloads y evadir firmas estaticas. Dual-use: AutoIt tambien se usa masivamente para automatizacion legitima.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "identifica de forma fiable (strings muy especificas del runtime de AutoIt) que el binario es un script AutoIt compilado -- tecnica de empaquetado muy usada para envolver payloads y evadir firmas estaticas. Dual-use: AutoIt tambien se usa masivamente para automatizacion legitima"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "WMI_strings",
+      "category": "utils",
+      "tags": [],
+      "severity_score": 50,
+      "confidence_score": 30,
+      "exploitability_score": 80,
+      "risk_score": 52,
+      "risk_justification": "Regex sobre namespaces WMI genericos (ROOT\\CIMV2 etc.) -- capacidad real (movimiento lateral/recoleccion via WMI es tecnica documentada), pero confianza baja: la practica totalidad del software de administracion o monitorizacion de Windows referencia WMI de forma legitima.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "regex sobre namespaces WMI genericos (ROOT\\CIMV2 etc.) -- capacidad real (movimiento lateral/recoleccion via WMI es tecnica documentada), pero confianza baja: la practica totalidad del software de administracion o monitorizacion de Windows referencia WMI de forma legitima"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "Obfuscated_Strings",
+      "category": "utils",
+      "tags": [],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "Busca 'GetProcAddress' ofuscado con XOR de un solo byte (decenas de claves) -- resolucion dinamica de API ocultando literalmente el nombre de la funcion es una tecnica de loader/shellcode para evadir firmas estaticas; sin justificacion legitima conocida (ningun software normal necesita ocultar ese string via XOR). Alta severidad (habilita carga dinamica de codigo) y alta confianza (patron de 15 bytes, colision incidental practicamente imposible).",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "Base64d_PE",
+      "category": "utils",
+      "tags": [],
+      "severity_score": 100,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 95,
+      "risk_justification": "Strings literales que son el inicio exacto de una cabecera MZ/PE codificada en base64 -- indica un ejecutable embebido como texto, tecnica de dropper/downloader habitual. Confianza alta (match literal muy especifico). Dual-use raro pero real: algunos instaladores/actualizadores legitimos embeben un binario auxiliar en base64 para su bootstrap.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "strings literales que son el inicio exacto de una cabecera MZ/PE codificada en base64 -- indica un ejecutable embebido como texto, tecnica de dropper/downloader habitual. Confianza alta (match literal muy especifico). Dual-use raro pero real: algunos instaladores/actualizadores legitimos embeben un binario auxiliar en base64 para su bootstrap"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "Misc_Suspicious_Strings",
+      "category": "utils",
+      "tags": [],
+      "severity_score": 50,
+      "confidence_score": 30,
+      "exploitability_score": 80,
+      "risk_score": 52,
+      "risk_justification": "Lista de palabras sueltas ('backdoor','virus','hack','exploit') y rutas ubicuas ('cmd.exe', fichero hosts) -- evidencia muy debil por si sola, esas palabras y rutas aparecen constantemente en software de seguridad, documentacion, videojuegos o scripts completamente benignos.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "lista de palabras sueltas ('backdoor','virus','hack','exploit') y rutas ubicuas ('cmd.exe', fichero hosts) -- evidencia muy debil por si sola, esas palabras y rutas aparecen constantemente en software de seguridad, documentacion, videojuegos o scripts completamente benignos"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "BITS_CLSID",
+      "category": "utils",
+      "tags": [],
+      "severity_score": 50,
+      "confidence_score": 100,
+      "exploitability_score": 80,
+      "risk_score": 72,
+      "risk_justification": "GUIDs COM exactos del servicio BITS (16 bytes cada uno, colision incidental practicamente imposible) -- BITS es abusado por malware para C2/descargas sigilosas que se mezclan con trafico de Windows Update, pero es un componente estandar de Windows que instaladores/actualizadores legitimos tambien usan para descargas reanudables.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "GUIDs COM exactos del servicio BITS (16 bytes cada uno, colision incidental practicamente imposible) -- BITS es abusado por malware para C2/descargas sigilosas que se mezclan con trafico de Windows Update, pero es un componente estandar de Windows que instaladores/actualizadores legitimos tambien usan para descargas reanudables"
+    },
+    {
+      "file": "utils/suspicious_strings.yar",
+      "rule_name": "HexEncodedTextPE",
+      "category": "utils",
+      "tags": [],
+      "severity_score": 100,
+      "confidence_score": 60,
+      "exploitability_score": 80,
+      "risk_score": 83,
+      "risk_justification": "Detecta cabeceras MZ/PE codificadas en hexadecimal separado por comas (tecnica documentada de RATs para evadir deteccion de PEs embebidos, ver referencia en meta). Severidad alta (ejecutable embebido/ofuscado). Confianza moderada: el patron $pe ('50,.{0,6}45') es corto y con comodin, podria coincidir incidentalmente en algunos blobs hexadecimales no relacionados. Sin caso de uso legitimo identificado para este empaquetado especifico.",
+      "finding_type": "malicious"
+    },
+    {
+      "file": "utils/url.yar",
+      "rule_name": "url",
+      "category": "utils",
+      "tags": [],
+      "severity_score": 25,
+      "confidence_score": 30,
+      "exploitability_score": 80,
+      "risk_score": 40,
+      "risk_justification": "Extractor de IOC generico: cualquier 'http(s)://' seguido de texto dispara la regla, sin validar el dominio; util para extraer una posible URL, no prueba nada por si mismo.",
+      "finding_type": "malicious",
+      "needs_review": true,
+      "needs_review_reason": "extractor de IOC generico: cualquier 'http(s)://' seguido de texto dispara la regla, sin validar el dominio; util para extraer una posible URL, no prueba nada por si mismo"
     }
   ]
 }
