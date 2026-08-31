@@ -22,7 +22,6 @@
     "packers/peid.yar",
     "packers/tweetable-polyglot-png.yar",
     "utils/base64.yar",
-    "utils/domain.yar",
     "utils/ip.yar",
     "utils/magic.yar",
     "utils/suspicious_strings.yar",
@@ -57,7 +56,6 @@
     "packers/peid.yar": 7614,
     "packers/tweetable-polyglot-png.yar": 1,
     "utils/base64.yar": 1,
-    "utils/domain.yar": 1,
     "utils/ip.yar": 1,
     "utils/magic.yar": 1,
     "utils/suspicious_strings.yar": 19,
@@ -72,7 +70,7 @@
     "webshells/Wshell_ChineseSpam.yar": 2,
     "webshells/Wshell_fire2013.yar": 1
   },
-  "total_rules_scored": 10108,
+  "total_rules_scored": 10107,
   "private_helper_rules_skipped": [
     {
       "file": "antidebug_antivm/antidebug_antivm.yar",
@@ -9726,20 +9724,6 @@
       "finding_type": "malicious",
       "needs_review": true,
       "needs_review_reason": "extractor de IOC generico: cualquier bloque de 4+ caracteres en alfabeto base64 dispara la regla (binarios, imagenes, fuentes, cualquier dato comprimido/codificado la contienen); util como building block para extraer un posible artefacto embebido, no es un veredicto por si mismo"
-    },
-    {
-      "file": "utils/domain.yar",
-      "rule_name": "domain",
-      "category": "utils",
-      "tags": [],
-      "severity_score": 25,
-      "confidence_score": 30,
-      "exploitability_score": 80,
-      "risk_score": 40,
-      "risk_justification": "Extractor de IOC generico: la regex no exige TLD valido ni contexto, matchea cualquier token con puntos/guiones (nombres de fichero, rutas, namespaces de codigo...); sirve para extraer un posible dominio, no prueba nada.",
-      "finding_type": "malicious",
-      "needs_review": true,
-      "needs_review_reason": "extractor de IOC generico: la regex no exige TLD valido ni contexto, matchea cualquier token con puntos/guiones (nombres de fichero, rutas, namespaces de codigo...); sirve para extraer un posible dominio, no prueba nada"
     },
     {
       "file": "utils/ip.yar",
